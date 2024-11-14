@@ -1,0 +1,103 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import LinkCopyButton from "../components/LinkCopyButton.astro";
+import BlogImage from "../components/BlogImage.astro";
+
+import "../styles/blogPost.css";
+
+type Props = CollectionEntry<"posts">;
+
+export async function getStaticPaths() {
+	const arr = await getCollection("posts", v => {
+		return import.meta.env.PROD ? v.data.draft !== true : true;
+	});
+	return arr.map(v => ({
+		params: { post: `/posts/${v.slug}` },
+		props: v,
+	}));
+}
+
+const d = Astro.props.data;
+
+const { Content } = await Astro.props.render();
+---
+<html lang="en">
+	<head>
+		<BaseHead metaTitle={`${d.title} - Turtlemay's Blog`} metaDescription={d.description} />
+	</head>
+	<body>
+		<div class="blogPost" data-pagefind-meta={`description:${d.description}`}>
+			<SiteLayout siteNavId="blog">
+				<header slot="upper" class="blogPost__postHeader" data-pagefind-body>
+					<div class="blogPost__postInfo">
+						<div class="blogPost__postDate">
+							<span class="original-date">
+								<FormattedDate date={d.pubDate} />
+							</span>
+							{d.updatedDate && (
+								<span class="updated-date">
+									Updated <FormattedDate date={d.updatedDate} />
+								</span>
+							)}
+						</div>
+						<div class="blogPost__postTitle">
+							<h1>{d.title}</h1>
+							<span class="blogPost__postTip" tabindex={0} title={d.description} aria-label={d.description} />
+							<dialog class="blogPost__postTipDialog">
+								<p>{d.description}</p>
+							</dialog>
+						</div>
+						<address class="blogPost__postAuthor">
+							<span>Written by</span>
+							<a class="author-link" rel="author" href="/turtlemay">
+								<span class="author-name">Thomas Mayer</span>
+							</a>
+						</address>
+					</div>
+				</header>
+				<div class="blogPost__postContent" data-pagefind-body>
+					<Content components={{ img: BlogImage }} />
+				</div>
+				<footer>
+					<LinkCopyButton />
+				</footer>
+			</SiteLayout>
+		</div>
+	</body>
+</html>
+
+<script>
+const dialogEl = document.querySelector<HTMLDialogElement>(".blogPost__postTipDialog");
+const openDialogEl = document.querySelector(".blogPost__postTip");
+
+openDialogEl?.addEventListener("click", _e => {
+	dialogEl?.show();
+});
+
+dialogEl?.addEventListener("focusout", _e => {
+	dialogEl?.close();
+});
+
+dialogEl?.addEventListener("keydown", e => {
+	if (e.key === "Escape") {
+		dialogEl?.close();
+	}
+});
+
+document.addEventListener("scroll", (() => {
+	const THROTTLE_TIME = 100;
+	let scrollTimeout = 0;
+	return () => {
+		window.clearTimeout(scrollTimeout);
+		scrollTimeout = window.setTimeout(handleScroll, THROTTLE_TIME);
+	};
+	function handleScroll() {
+		if (dialogEl?.open) {
+			dialogEl?.close();
+		}
+	}
+})());
+</script>

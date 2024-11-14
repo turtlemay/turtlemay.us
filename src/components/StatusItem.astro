@@ -1,0 +1,31 @@
+---
+import { type CollectionEntry } from "astro:content";
+
+type Props = CollectionEntry<"status">;
+
+function getDateText(date: Date) {
+	const y = date.toLocaleDateString("en-us", { year: "numeric" });
+	const m = date.toLocaleDateString("en-us", { month: "short" });
+	const d = date.toLocaleDateString("en-us", { day: "numeric" });
+	return `${m} ${d}, ${y}`;
+}
+
+function getTimeText(date: Date) {
+	return date.toLocaleTimeString("en-us", { hour: "numeric", minute: "numeric" });
+}
+---
+<div class="statusItem" id={Astro.props.slug}>
+	<div class="itemHeader itemInfo">
+		<time class="itemDate" datetime={Astro.props.data.pubDate.toISOString()}>
+			<span class="date">{getDateText(Astro.props.data.pubDate)}</span>
+			<span class="separator" />
+			<span class="time">{getTimeText(Astro.props.data.pubDate)}</span>
+		</time>
+	</div>
+	<div class="itemContent">
+		<slot />
+	</div>
+	<div class="itemLink" data-pagefind-ignore>
+		<a href={`/posts/${Astro.props.slug}#${Astro.props.slug}`}>Permalink</a>
+	</div>
+</div>

@@ -1,0 +1,42 @@
+---
+import { getCollection } from "astro:content";
+import Blog from "../layouts/Blog.astro";
+import StatusItem from "../components/StatusItem.astro";
+import SiteLinkCallout from "../components/SiteLinkCallout.astro";
+
+import "../styles/statusPage.css";
+
+const items = (await getCollection("status", v => {
+	return import.meta.env.PROD ? v.data.draft !== true : true;
+})).sort((a, b) => {
+	return b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+});
+---
+<Blog blogNavId="status-posts">
+	<Fragment slot={items.length > 0 && "content"}>
+		<main class="statusPage" data-pagefind-body>
+			<h1>Status Updates</h1>
+			<ul data-pagefind-ignore>
+				{items.map(async v => {
+					const { Content } = await v.render();
+					return (
+						<li>
+							<StatusItem {...v}>
+								<Content />
+							</StatusItem>
+						</li>
+					);
+				})}
+			</ul>
+		</main>
+		<footer class="endCallout">
+			<SiteLinkCallout text="Visit the Gallery" href="/photos" />
+		</footer>
+	</Fragment>
+</Blog>
+
+<style>
+.endCallout {
+	margin-top: 80px;
+}
+</style>

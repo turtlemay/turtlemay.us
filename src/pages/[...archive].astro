@@ -1,0 +1,124 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import SiteLinkCallout from "../components/SiteLinkCallout.astro";
+import BlogImage from "../components/BlogImage.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../global";
+
+import "../styles/sitePage.css";
+import LinkCopyButton from "../components/LinkCopyButton.astro";
+
+export async function getStaticPaths() {
+	const arr = await getCollection("archive", v => {
+		return import.meta.env.PROD ? v.data.draft !== true : true;
+	});
+	return arr.map(v => ({
+		params: { archive: `/posts/${v.slug}` },
+		props: v,
+	}));
+}
+
+type Props = CollectionEntry<"archive">;
+
+const { Content } = await Astro.props.render();
+
+function createDateText(date: Date) {
+	const y = date.toLocaleDateString("en-us", { year: "numeric" });
+	const m = date.toLocaleDateString("en-us", { month: "short" });
+	const d = date.toLocaleDateString("en-us", { day: "numeric" });
+	return `${m} ${d}, ${y}`;
+}
+---
+<!doctype html>
+<html lang="en">
+<head>
+	<meta name="robots" content="noindex" />
+	<BaseHead metaTitle={`${SITE_TITLE} - ${Astro.props.data.title}`} metaDescription={Astro.props.data.description ?? SITE_DESCRIPTION} />
+	<style>
+		main {
+			margin: 60px 0;
+		}
+
+		h1 {
+			font: inherit;
+			color: inherit;
+		}
+
+		header {
+			font: 14px "Roboto";
+			color: #999;
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 0.5em;
+		}
+
+		header > :not(:first-child) {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5em;
+			&::before {
+				content: "❖";
+				color: #bbb;
+			}
+		}
+
+		.updatedDate {
+			color: #bbb;
+		}
+
+		.endPermalink {
+			margin: 4em 0 0;
+		}
+
+		.endCallout {
+			margin: 8em 0 20em;
+		}
+	</style>
+
+	<style is:global>
+		/* First non-empty element */
+		.sitePage.archive .postContent > :not(:empty):not(:not(:empty) ~ :not(:empty)) {
+			margin-top: 0;
+		}
+
+		.sitePage.archive h2:first-of-type {
+			margin-top: 0;
+		}
+	</style>
+</head>
+<body>
+	<SiteLayout siteNavId="blog">
+		<main class="archive sitePage" data-pagefind-body>
+			<header>
+				<h1 title={Astro.props.data.description} data-pagefind-index-attrs="title">
+					{Astro.props.data.title}
+				</h1>
+				<span class="date">
+					<time class="publishedDate" datetime={Astro.props.data.pubDate.toISOString()}>
+						{createDateText(Astro.props.data.pubDate)}
+					</time>
+					{Astro.props.data.updatedDate && (
+						<time class="updatedDate" datetime={Astro.props.data.updatedDate.toISOString()}>
+							<span>(Updated</span>
+							{createDateText(Astro.props.data.updatedDate)})
+						</time>
+					)}
+				</span>
+			</header>
+			<div class="postContent">
+				<Content components={{ img: BlogImage }} />
+			</div>
+			<footer>
+				<div class="endPermalink">
+					<LinkCopyButton />
+				</div>
+			</footer>
+		</main>
+		<footer class="endCallout">
+			<SiteLinkCallout text="Go Home" href="/turtlemay" />
+		</footer>
+	</SiteLayout>
+</body>
+</html>

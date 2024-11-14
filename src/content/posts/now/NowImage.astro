@@ -1,0 +1,40 @@
+---
+import { Image } from "astro:assets";
+
+import img from "./IMG_0851-002.jpg";
+---
+<style>
+.image {
+	display: inline-block;
+	box-sizing: border-box;
+	padding: 5px;
+	width: 100%;
+	border: 1px solid #eee;
+}
+
+.image-positioner {
+	display: flex;
+	justify-content: center;
+	overflow: hidden;
+}
+
+img {
+	width: 100%;
+	min-width: 900px;
+	height: auto;
+	background: #fff;
+	color: transparent;
+}
+
+@media (width < 600px) {
+	img {
+		margin-left: -50px;
+	}
+}
+</style>
+
+<a class="image" href={img.src}>
+	<div class="image-positioner">
+		<Image alt="Turtlemay sitting on park bench in late winter" src={img} width={1000} />
+	</div>
+</a>

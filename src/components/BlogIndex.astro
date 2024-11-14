@@ -1,0 +1,111 @@
+---
+import { getCollection } from "astro:content";
+
+interface Props {
+	posts: Awaited<ReturnType<typeof getCollection<"posts">>>;
+}
+
+const items = (await getCollection("posts", v => {
+	return import.meta.env.PROD ? v.data.draft !== true : true;
+})).sort((a, b) => {
+	return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+});
+
+const postNumbers = Object.fromEntries(items.toReversed().map(
+	(v, i) => [v.slug, i + 1])
+);
+
+function formatDate(date: Date) {
+	const month = date.toLocaleDateString("en-us", { month: "short" });
+	const day = date.toLocaleDateString("en-us", { day: "numeric" });
+	return `${month} ${day.padStart(2, "0")}`;
+}
+---
+<ul>
+	{Astro.props.posts.map(v => (
+		<li>
+			<a class="postLink" href={`/posts/${v.slug}/`} title={v.data.title}>
+				<div class="postNum" aria-hidden="true">
+					{`${postNumbers[v.slug]}`.padStart(3, "0")}
+				</div>
+				<div class="postTitle">
+					<h3 class="heading">{v.data.title}</h3>
+					<div class="spacer" />
+				</div>
+				<time class="postDate" datetime={v.data.pubDate.toISOString()}>
+					{formatDate(v.data.pubDate)}
+				</time>
+				<div class="spacer" />
+				<div class="postDescription">{v.data.description}</div>
+			</a>
+		</li>
+	))}
+</ul>
+
+<style>
+a {
+	text-decoration: inherit;
+	color: inherit;
+}
+
+ul, li {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.postLink {
+	box-sizing: border-box;
+	width: 100%;
+	padding: 1em 1.5em;
+	border-radius: 10px;
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	transition-duration: 300ms;
+	transition-property: background, filter;
+	&:hover {
+		background: #f9f9f9;
+	}
+	&:active {
+		filter: contrast(0.9);
+	}
+}
+
+.postNum {
+	font: 300 18px "Roboto";
+	line-height: 1.5;
+	color: #ccc;
+	margin-right: 15px;
+}
+
+.postTitle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	.heading {
+		font: bold 18px "Roboto";
+		line-height: 1.5;
+		text-wrap: pretty;
+		color: #222;
+		margin: 0;
+	}
+	.spacer {
+		flex: 1;
+		margin: 0 1em;
+		border-bottom: 1px solid #eee;
+	}
+}
+
+.postDate {
+	font: italic 16px "Roboto";
+	line-height: 1.5;
+	color: #666;
+}
+
+.postDescription {
+	font: italic 14px "Roboto";
+	line-height: 1.5;
+	color: #aaa;
+	margin: 0.5em 0 0;
+}
+</style>

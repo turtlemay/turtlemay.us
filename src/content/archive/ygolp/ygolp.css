@@ -1,0 +1,18 @@
+#screenshots {
+	display: none;
+}
+
+#screenshots ~ ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: auto auto;
+	gap: 10px;
+	justify-content: center;
+	margin: 2em 0;
+	text-align: center;
+	& figure {
+		margin: 0;
+	}
+}

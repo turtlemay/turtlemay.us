@@ -1,0 +1,344 @@
+---
+interface Props {
+	siteNavId?: string;
+}
+
+const { siteNavId: active } = Astro.props;
+---
+<div class="siteRoot">
+	<header>
+		<nav>
+			<section class="left">
+				<div class="navList">
+					<a class="navItem" class:list={{ navActive: "blog" === active }} href="/posts">Blog</a>
+					<a class="navItem" class:list={{ navActive: "photos" === active }} href="/photos">Photos</a>
+				</div>
+			</section>
+			<section class="middle turtlemay">
+				<a class="navItem turtlemay" class:list={{ navActive: "home" === active }} href="/">
+					<span>Turtlemay's</span>
+					<span>Homepage</span>
+				</a>
+			</section>
+			<section class="right">
+				<div class="navList">
+					<a class="navItem" class:list={{ navActive: "projects" === active }} href="/projects">Works</a>
+					<a class="navItem" class:list={{ navActive: "about" === active }} href="/turtlemay">About</a>
+				</div>
+			</section>
+		</nav>
+	</header>
+	<div class="siteContent siteRoot__mainItem">
+		<div class="siteContent__upper">
+			<slot name="upper" />
+		</div>
+		<div class="siteContent__lower">
+			<slot />
+		</div>
+	</div>
+	<footer>
+		<section class="left">
+			<a class="scroll-top"
+				role="button" href="#"
+				title="Scroll to top of page"
+				data-scroll-top
+				aria-hidden="true">
+				<span>Top</span>
+				<span class="arrow" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><path d="M988.4,496.8l0.5-0.5L743.2,251.5l-48.9,49.1l162.6,162H10v69.5h848l-162.6,162l48.9,49.1L990,498.4L988.4,496.8z"></path></svg>
+				</span>
+			</a>
+		</section>
+		<section class="middle">
+			<a class:list={{ navActive: "rss" === active }} href="/rss">RSS</a>
+		</section>
+		<section class="right">
+			<a class="search" class:list={{ navActive: "search" === active }} aria-label="Search" title="Site Search" href="/search">
+				<div class="icon" />
+			</a>
+		</section>
+	</footer>
+</div>
+
+<style>
+:is(h1, h2, h3, h4, h5, h6) {
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	color: inherit;
+	text-decoration: inherit;
+}
+
+.siteRoot {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	& > .siteRoot__mainItem {
+		flex: 1;
+	}
+}
+
+header {
+	padding: 2rem 0;
+	background: rgb(247, 247, 247);
+	border-bottom: 1px solid rgb(244, 244, 244);
+}
+
+nav {
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	margin: 0 auto;
+	padding: 0 var(--global-site-margin);
+	max-width: var(--global-site-max-width);
+}
+
+nav > section {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 15px;
+
+	&.left::after,
+	&.middle::before, &.middle::after,
+	&.right::before {
+		content: "";
+		flex: 1;
+		border-bottom: 2px solid #eee;
+	}
+}
+
+.navList {
+	display: flex;
+	justify-content: center;
+	column-gap: 30px;
+	row-gap: 20px;
+
+	nav > section.left & {
+		align-items: flex-start;
+	}
+
+	nav > section.right & {
+		align-items: flex-end;
+	}
+}
+
+.navItem {
+	display: block;
+	font: 700 16px "Roboto";
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	color: rgb(153, 153, 153);
+	transition-duration: 200ms;
+	transition-property: color, filter;
+	&:hover, &.navActive {
+		color: #111;
+	}
+	&:active {
+		filter: contrast(0.6);
+	}
+}
+
+.navItem.turtlemay {
+	font: italic 12px "Roboto";
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.navItem.rss {
+	background: orangered;
+	color: #fff;
+	border-radius: 10%;
+	padding: 4px 8px;
+	transition-duration: 200ms;
+	transition-property: color, filter, background;
+	.navActive &,
+	&:hover {
+		color: orangered;
+		background: #222;
+	}
+	&:active {
+		filter: brightness(2);
+	}
+}
+
+@media (width < 500px) {
+	nav {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		row-gap: 30px;
+		column-gap: 15px;
+	}
+
+	nav > section {
+		&.left::after,
+		&.right::before {
+			display: none;
+		}
+	}
+
+	nav > section.turtlemay {
+		order: -1;
+		width: 100%;
+	}
+
+	.navList {
+		column-gap: 15px;
+		row-gap: 10px;
+	}
+
+	.navItem {
+		font-size: 14px;
+	}
+
+	.navItem.turtlemay {
+		font-size: 10px;
+	}
+}
+
+.siteContent__lower {
+	max-width: var(--global-site-max-width);
+	padding: 0 var(--global-site-margin);
+	margin: 0 auto;
+}
+
+footer {
+	box-sizing: border-box;
+	margin: 0 auto;
+	font: 14px monospace;
+	color: #ccc;
+	padding: 2rem 0;
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+}
+
+footer > section {
+	padding: 0 2em;
+}
+
+footer a {
+	color: inherit;
+	text-decoration: inherit;
+	transition-duration: 200ms;
+	transition-property: filter;
+	&:active {
+		filter: brightness(1.1);
+	}
+}
+
+footer a.scroll-top {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25em;
+	transition-duration: 400ms;
+	transition-property: opacity;
+	&:not(.scroll-top-enabled) {
+		opacity: 0;
+		pointer-events: none;
+	}
+	& .arrow {
+		display: inline-flex;
+		width: 10px;
+		height: 10px;
+		& svg {
+			fill: #ccc;
+			transform: rotate(-90deg);
+		}
+	}
+}
+
+footer > section.middle a {
+	&::before, &::after {
+		content: "—";
+		margin: 0 0.25em;
+		color: transparent;
+		transition-duration: 200ms;
+		transition-property: color;
+	}
+	&:hover, &.navActive {
+		&::before, &::after {
+			color: inherit;
+		}
+	}
+}
+
+footer > section.right {
+	text-align: right;
+	a.search {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		aspect-ratio: 1;
+		height: 1em;
+		padding: 5px;
+		border-radius: 5px;
+		transition-duration: 200ms;
+		transition-property: background, filter;
+		.icon {
+			display: inline-block;
+			transform: rotate(45deg);
+			&::before {
+				content: "⚲";
+				font-size: 1.4em;
+			}
+		}
+		&:hover, &.navActive {
+			background: #f9f9f9;
+		}
+		&:active {
+			background: #f5f5f5;
+		}
+	}
+}
+</style>
+
+<script>
+const scrollTopEl = document.querySelector("a[data-scroll-top]");
+
+scrollTopEl?.addEventListener("click", e => {
+	e.preventDefault();
+	window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+updateScrollTopState();
+
+document.addEventListener("scroll", (() => {
+	const THROTTLE_TIME = 250;
+	let timeout = 0;
+	return () => {
+		window.clearTimeout(timeout);
+		timeout = window.setTimeout(updateScrollTopState, THROTTLE_TIME);
+	};
+})());
+
+window.addEventListener("resize", (() => {
+	const THROTTLE_TIME = 250;
+	let timeout = 0;
+	return () => {
+		window.clearTimeout(timeout);
+		timeout = window.setTimeout(updateScrollTopState, THROTTLE_TIME);
+	};
+})());
+
+const resizeObserver = new ResizeObserver(updateScrollTopState);
+resizeObserver.observe(document.body);
+
+function updateScrollTopState() {
+	const scrollable = (
+		document.body.clientHeight > window.innerHeight &&
+		window.scrollY > 0
+	);
+	if (scrollable) {
+		scrollTopEl?.classList.add("scroll-top-enabled");
+	} else {
+		scrollTopEl?.classList.remove("scroll-top-enabled");
+	}
+}
+</script>

@@ -1,0 +1,51 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import Blog from "../layouts/Blog.astro";
+import StatusItem from "../components/StatusItem.astro";
+import AuthorCard from "../components/AuthorCard.astro";
+import SiteLinkCallout from "../components/SiteLinkCallout.astro";
+
+import "../styles/statusPage.css";
+
+export async function getStaticPaths() {
+	const arr = await getCollection("status", v => {
+		return import.meta.env.PROD ? v.data.draft !== true : true;
+	});
+	return arr.map(v => ({
+		params: { status: `/posts/${v.slug}` },
+		props: v,
+	}));
+}
+
+type Props = CollectionEntry<"status">;
+
+const { Content } = await Astro.props.render();
+---
+<Blog blogNavId="status-posts">
+	<Fragment slot="content">
+		<main class="statusPage" data-pagefind-body>
+			<StatusItem {...Astro.props}>
+				<Content />
+			</StatusItem>
+			<footer class="author">
+				<AuthorCard />
+			</footer>
+		</main>
+		<footer>
+			<section class="endCallout">
+				<SiteLinkCallout text="Other posts" href="/status" />
+			</section>
+		</footer>
+	</Fragment>
+</Blog>
+
+<style>
+.author {
+	margin: 40px 0 0;
+	display: flex;
+}
+
+.endCallout {
+	margin: 40px 0 160px;
+}
+</style>

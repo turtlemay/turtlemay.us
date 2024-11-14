@@ -1,0 +1,83 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import PageFind from "astro-pagefind/components/Search";
+import { SITE_TITLE } from "../global";
+
+import "../styles/sitePage.css";
+---
+<!doctype html>
+<html lang="en">
+<head>
+	<meta name="robots" content="noindex" />
+	<BaseHead metaTitle={`${SITE_TITLE} - Site Search`} metaDescription="Site search" />
+	<style>
+		main {
+			margin: 2em 0 3em;
+		}
+	</style>
+	<style is:global>
+		.pagefind-ui {
+			line-height: 2;
+		}
+
+		.pagefind-ui a {
+			text-decoration: none !important;
+		}
+
+		.pagefind-ui input {
+			outline: 0;
+			transition-duration: 200ms;
+			&:focus-within {
+				border-color: #999;
+			}
+		}
+
+		.pagefind-ui button {
+			transition-duration: 200ms;
+		}
+	</style>
+</head>
+<body>
+	<SiteLayout siteNavId="search">
+		<main class="sitePage">
+			<h1 hidden>Site Search</h1>
+			<PageFind id="search" className="pagefind-ui" uiOptions={{ showImages: false }} />
+		</main>
+	</SiteLayout>
+</body>
+</html>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+	const formEl = document.querySelector("#search form");
+	const inputEl = formEl?.querySelector("input");
+	const clearBtnEl = formEl?.querySelector(".pagefind-ui__search-clear");
+
+	if (!formEl) return;
+	if (!inputEl) return;
+
+	const updateInputValue = (newValue?: string) => {
+		const getQuery = () => (new URLSearchParams(location.search)).get("q");
+		const prevQuery = sessionStorage.getItem("lastSearchQuery");
+		inputEl.value = newValue ?? getQuery() ?? prevQuery ?? "";
+		inputEl.dispatchEvent(new Event("input", { bubbles: true }));
+	};
+
+	inputEl.placeholder = "Search Site";
+	updateInputValue();
+	inputEl.select();
+
+	inputEl.addEventListener("input", _event => {
+		sessionStorage.setItem("lastSearchQuery", inputEl.value);
+	});
+
+	clearBtnEl?.addEventListener("click", _event => {
+		sessionStorage.removeItem("lastSearchQuery");
+	});
+
+	window.addEventListener("popstate", _event => {
+		updateInputValue();
+	});
+});
+</script>

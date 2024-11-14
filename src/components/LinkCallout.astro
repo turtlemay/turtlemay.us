@@ -1,0 +1,134 @@
+---
+import { Image } from "astro:assets";
+import { getEntry } from "astro:content";
+
+interface Props {
+	id: string;
+}
+
+const entry = await getEntry("links", Astro.props.id);
+
+if (!entry) {
+	throw new Error(`Entry "${Astro.props.id}" not found.`);
+}
+
+const { data: d } = entry;
+---
+<div class="callout">
+	<a class="link" href={d.href} title={d.title}>
+		<div class="image" aria-hidden="true">
+			<Image src={d.thumb} alt="" width={100} data-href={d.href} />
+		</div>
+		<div class="text">
+			<div class="category-text">{d.label}</div>
+			<div class="subject-text">{d.name}</div>
+		</div>
+		<div class="spacer" />
+		<div class="arrow" aria-hidden="true">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><path d="M988.4,496.8l0.5-0.5L743.2,251.5l-48.9,49.1l162.6,162H10v69.5h848l-162.6,162l48.9,49.1L990,498.4L988.4,496.8z"></path></svg>
+		</div>
+	</a>
+</div>
+
+<style>
+.callout {
+	container-name: callout-container;
+	container-type: inline-size;
+	width: 100%;
+}
+
+.link {
+	color: inherit;
+	text-decoration: inherit;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 10px;
+	transition-duration: 200ms;
+	transition-property: filter, transform;
+	&:hover {
+		filter: opacity(0.85);
+	}
+	&:active {
+		transform: scale(0.99);
+	}
+}
+
+.spacer {
+	flex: 1;
+}
+
+.image {
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 60px;
+	height: 60px;
+	padding: 2px;
+	border: 1px solid #eee;
+	border-radius: 50%;
+	overflow: hidden;
+	img {
+		width: 100%;
+		height: auto;
+		border-radius: 50%;
+	}
+}
+
+.text {
+	color: #666;
+	display: flex;
+	flex-direction: column;
+	gap: 0.25em;
+}
+
+.category-text {
+	font: 12px "Roboto";
+	text-transform: uppercase;
+	color: #aaa;
+}
+
+.subject-text {
+	font: 500 16px "Roboto";
+	color: #222;
+}
+
+.arrow {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 1em;
+	height: 1em;
+	svg {
+		flex: 1;
+		fill: #666;
+	}
+}
+
+@container callout-container (width < 230px) {
+	.spacer {
+		display: none;
+	}
+
+	.image {
+		width: 50px;
+		height: 50px;
+	}
+
+	.text {
+		text-align: center;
+		gap: 0;
+		width: 100%;
+	}
+
+	.category-text {
+		font-size: 10px;
+	}
+
+	.subject-text {
+		font-size: 12px;
+	}
+}
+</style>

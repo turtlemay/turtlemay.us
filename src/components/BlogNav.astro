@@ -1,0 +1,105 @@
+---
+import { getCollection } from "astro:content";
+
+interface Props {
+	blogNavId?: string;
+}
+
+const posts = await getCollection("posts", v => {
+	return import.meta.env.PROD ? v.data.draft !== true : true;
+});
+const status = await getCollection("status", v => {
+	return import.meta.env.PROD ? v.data.draft !== true : true;
+});
+const featured = posts.filter(v => (
+	 v.data.tags?.includes("featured")
+));
+
+const navItemData = [{
+	label: "Articles", icon: "📰", href: "/posts",
+	id: "blog-posts", count: posts.length,
+}, {
+	label: "Updates", icon: "📄", href: "/status",
+	id: "status-posts", count: status.length,
+}, {
+	label: "Featured", icon: "✨", href: "/featured",
+	id: "featured-posts", count: featured.length,
+}];
+---
+<nav>
+	<ul>
+		{navItemData.map((v) => (
+			<li class:list={{ navActive: v.id === Astro.props.blogNavId }}>
+				<a href={v.href}>
+					<span class="icon" aria-hidden="true">
+						{v.icon}
+					</span>
+					<span>{v.label}</span>
+					<span class="count" aria-hidden="true">
+						({v.count})
+					</span>
+				</a>
+			</li>
+		))}
+	</ul>
+</nav>
+
+<style>
+a {
+	color: inherit;
+	text-decoration: inherit;
+}
+
+ul, li {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul {
+	text-align: center;
+}
+
+li {
+	display: inline-block;
+	transition-property: filter;
+	transition-duration: 200ms;
+	&:hover {
+		filter: contrast(0.95);
+	}
+	&:active {
+		filter: contrast(0.85);
+	}
+}
+
+li a {
+	display: block;
+	font: 14px sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	background-color: #fff;
+	color: #2c3338;
+	box-shadow:
+		0 1px 2px #0000001f,
+		0 0 0 1px #0000001f;
+	border-radius: 4px;
+	padding: 8px;
+	margin: 0 0.5em 1em;
+	transition-property: background-color;
+	transition-duration: 200ms;
+	.navActive & {
+		background-color: #f0f0f0;
+	}
+}
+
+li .icon {
+	padding: 0 2px 0 0;
+	filter: grayscale(1);
+	user-select: none;
+}
+
+li .count {
+	color: #ccc;
+	user-select: none;
+}
+</style>

@@ -1,0 +1,17 @@
+#nebular-blue {
+	display: none;
+}
+
+#nebular-blue ~ ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: auto auto;
+	justify-content: center;
+	gap: 20px;
+	margin: 2em 0;
+	& figure {
+		margin: 0;
+	}
+}

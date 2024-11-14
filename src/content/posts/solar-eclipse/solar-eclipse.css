@@ -1,0 +1,20 @@
+.video-callout-container {
+	> :first-child {
+		margin-top: 0;
+	}
+	> :last-child {
+		margin: 2em auto;
+	}
+	@media (width >= 800px) {
+		display: flex;
+		align-items: flex-start;
+		justify-content: flex-start;
+		column-gap: 2em;
+		> :first-child {
+			flex: 1;
+		}
+		> :last-child {
+			margin-top: 0;
+		}
+	}
+}

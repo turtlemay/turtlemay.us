@@ -1,0 +1,7 @@
+.astro
+.env
+env.d.ts
+node_modules
+
+/dist
+/src/photos/*.compiled.json

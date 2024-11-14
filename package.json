@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "name": "turtlemay-web",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.3",
+    "@astrojs/mdx": "^3.1.7",
+    "@astrojs/rss": "^4.0.7",
+    "@astrojs/sitemap": "^3.1.6",
+    "@fontsource/roboto": "^5.1.0",
+    "@types/sanitize-html": "^2.13.0",
+    "astro": "^4.15.9",
+    "astro-pagefind": "^1.6.0",
+    "dotenv": "^16.4.5",
+    "exifr": "^7.1.3",
+    "sanitize-html": "^2.13.1",
+    "typescript": "^5.6.2"
+  }
+}

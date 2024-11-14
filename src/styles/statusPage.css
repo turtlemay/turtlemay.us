@@ -1,0 +1,113 @@
+.statusPage {
+	margin: 4rem 0 0;
+}
+
+.statusPage a {
+	text-decoration: inherit;
+	color: inherit;
+}
+
+.statusPage p a {
+	font-weight: 500;
+	border-bottom: 2px solid #eee;
+	transition-duration: 200ms;
+	transition-property: filter;
+	&:hover {
+		filter: contrast(0.8);
+	}
+	&:active {
+		filter: brightness(0.8);
+	}
+}
+
+.statusPage :is(ul, li) {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.statusPage ul {
+	margin: 2em 0;
+}
+
+.statusPage :is(h1, h2) {
+	font: italic 300 20px "Roboto";
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	color: #ccc;
+	&::before, &::after {
+		content: "";
+		border-bottom: 1px solid #eee;
+		width: 30px;
+	}
+}
+
+.statusPage li {
+	margin: 0 0 40px;
+}
+
+.statusPage .statusItem {
+	padding: 10px 20px;
+}
+
+.statusPage .itemHeader {
+	margin: 0 0 0 -30px;
+}
+
+.statusPage .itemInfo {
+	font: 300 16px "Roboto";
+	color: #333;
+	padding: 5px 10px;
+	background: #f9f9f9;
+	border: 1px solid #eee;
+	border-left: 0;
+	border-right: 0;
+}
+
+.statusPage .itemDate {
+	display: flex;
+	align-items: baseline;
+	gap: 5px;
+	&::before {
+		content: "🗓️";
+		filter: grayscale(1);
+	}
+	> .separator::after {
+		content: "❖";
+		color: #ddd;
+	}
+}
+
+.statusPage .itemLink {
+	text-align: right;
+}
+
+.statusPage .itemLink a {
+	display: inline-block;
+	font: 14px "Roboto";
+	color: #999;
+	transition-duration: 200ms;
+	transition-property: filter, transform;
+	&::before {
+		content: "🔗";
+		filter: grayscale(1);
+		margin: 0 3px 0 0;
+		font-size: 0.75em;
+		opacity: 0.3;
+	}
+	&:hover {
+		filter: brightness(0.8);
+	}
+	&:active {
+		transform: scale(0.95);
+	}
+}
+
+.statusPage .itemContent {
+	font: 18px "Roboto";
+	line-height: 1.6;
+	color: #333;
+	padding: 10px 0;
+}

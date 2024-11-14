@@ -1,0 +1,84 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import SiteLinkCallout from "../components/SiteLinkCallout.astro";
+import MailCallout from "../components/MailCallout.astro";
+import { SITE_TITLE } from "../global";
+
+import "../styles/sitePage.css";
+
+export const address = [
+	"Aaron Thomas Mayer",
+	"3296 Westerville Rd, Rm 10 #228",
+	"Columbus, OH 43224, USA",
+];
+---
+<!doctype html>
+<html lang="en">
+<head>
+	<meta name="robots" content="noindex" />
+	<BaseHead metaTitle={`${SITE_TITLE} - Mailing Info`} metaDescription="Turtlemay's mailing information" />
+	<style>
+		.mailPage {
+			margin: 60px 0;
+		}
+
+		h1, h2, h3, h4, h5, h6 {
+			font: bold 16px "Roboto";
+		}
+
+		h1 {
+			font-size: 18px;
+		}
+
+		.pageText {
+			font: 16px "Roboto";
+			line-height: 1.5;
+			color: #999;
+			max-width: 400px;
+			margin: 0 auto;
+		}
+
+		.address {
+			margin: 60px 0;
+		}
+
+		.endCallout {
+			margin: 100px 0;
+		}
+	</style>
+</head>
+<body>
+	<SiteLayout>
+		<div class="mailPage sitePage">
+			<main data-pagefind-body>
+				<div class="pageText textAbove">
+					<h1>Mailing Address</h1>
+					<p>You can send letters and packages to my virtual mailbox care of Negash Digital Printing:</p>
+				</div>
+				<div class="address">
+					<MailCallout address={address.join("\n")} />
+				</div>
+				<div class="pageText textBelow">
+					<section>
+						<h2>What's a virtual mailbox?</h2>
+						<p>It's like a third-party managed PO box that protects your home address and lets you manage and forward your mail online.</p>
+					</section>
+					<section>
+						<center>
+							<p>
+								Get your own virtual address:<br/>
+								<a rel="external" href="https://www.anytimemailbox.com/">Anytime Mailbox</a><br/>
+							</p>
+							<p>(Not a sponsor, just one of the services I use.)</p>
+						</center>
+					</section>
+				</div>
+			</main>
+			<footer class="endCallout">
+				<SiteLinkCallout text="Go home" href="/turtlemay" />
+			</footer>
+		</div>
+	</SiteLayout>
+</body>
+</html>

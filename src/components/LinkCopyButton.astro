@@ -1,0 +1,94 @@
+<x-linkcopybtn data-active="false">
+	<a class="btn" role="button" href={Astro.url.href} title="Link to this page">Permalink</a>
+	<div class="copyMessage" aria-hidden="true">Copied to clipboard</div>
+</x-linkcopybtn>
+
+<style>
+a {
+	color: inherit;
+	text-decoration: inherit;
+}
+
+x-linkcopybtn {
+	display: block;
+	text-align: center;
+	margin: 2rem 0;
+}
+
+.btn {
+	display: inline-block;
+	margin: 1rem 0;
+	padding: 0.5em 1em;
+	text-decoration: none;
+	font: 1em Roboto;
+	border: 1px solid #eee;
+	border-radius: 50px;
+	background: #fff;
+	color: #333;
+	transition-duration: 200ms;
+	transition-property: filter;
+	&::before {
+		content: "🔗";
+		filter: grayscale(1);
+		margin: 0 3px 0 0;
+	}
+	&:hover {
+		filter: contrast(0.95);
+	}
+	&:active {
+		filter: contrast(0.9);
+	}
+}
+
+.copyMessage {
+	font: 0.8em Roboto;
+	color: #aaa;
+	user-select: none;
+	transition-duration: 200ms;
+	transition-property: transform, filter;
+	x-linkcopybtn:not([data-active="true"]) & {
+		transform: translateY(-20px);
+		filter: opacity(0);
+	}
+}
+</style>
+
+<script>
+class LinkCopyButton extends HTMLElement {
+	#hrefEl = this.querySelector("a[href]");
+
+	#clickTimeout?: number;
+
+	constructor() {
+		super();
+		
+		// Doesn't work on mobile.
+		if (navigator.clipboard) {
+			this.#hrefEl?.addEventListener("click", this.#handleClick);
+		}
+	}
+
+	disconnectedCallback() {
+		window.clearTimeout(this.#clickTimeout);
+		this.#actionEnd();
+	}
+
+	#actionStart = () => (this.dataset["active"] = "true");
+	#actionEnd = () => (this.dataset["active"] = "false");
+
+	#copyToClipboard = () => {
+		const str = this.#hrefEl?.getAttribute("href");
+		if (str) navigator.clipboard.writeText(str);
+	};
+
+	#handleClick = (e: Event) => {
+		e.preventDefault();
+		this.#copyToClipboard();
+		this.#actionStart();
+		window.clearTimeout(this.#clickTimeout);
+		this.#clickTimeout = window.setTimeout(this.#actionEnd, 800);
+	};
+}
+
+customElements.define("x-linkcopybtn", LinkCopyButton);
+</script>

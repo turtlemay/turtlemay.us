@@ -1,0 +1,70 @@
+---
+import SiteLayout from "./SiteLayout.astro";
+import BaseHead from "../components/BaseHead.astro";
+import BlogNav from "../components/BlogNav.astro";
+
+interface Props {
+	blogNavId?: string;
+}
+
+const DESCRIPTION = "A tiny blog of short thoughts and guides on tech, media, life, and other dull topics, written by Turtlemay.";
+---
+<!doctype html>
+<html lang="en">
+<head>
+	<BaseHead metaTitle="Turtlemay's Blog" metaDescription={DESCRIPTION} />
+	<style>
+		a {
+			text-decoration: inherit;
+			color: inherit;
+		}
+
+		.blog {
+			margin: 2rem 0 4rem;
+		}
+
+		.brief {
+			text-align: center;
+			padding: 2em;
+			font: italic 14px "Roboto";
+			color: #999;
+			& > * {
+				display: inline-block;
+				text-align: left;
+				max-width: 350px;
+			}
+		}
+		
+		.nav {
+			margin: 2rem 0 4rem;
+		}
+
+		.noPosts {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-height: 200px;
+			font: italic 16px "Roboto";
+		}
+	</style>
+</head>
+<body>
+	<SiteLayout siteNavId="blog">
+		<div class="blog">
+			<header>
+				<div class="brief" data-pagefind-body={"blog-posts" === Astro.props.blogNavId}>
+					<p>{DESCRIPTION}</p>
+				</div>
+				<div class="nav">
+					<BlogNav {...Astro.props} />
+				</div>
+			</header>
+			<slot name="content">
+				<div class="noPosts">
+					<p>No posts found.</p>
+				</div>
+			</slot>
+		</div>
+	</SiteLayout>
+</body>
+</html>

@@ -1,0 +1,311 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import SiteLinkCallout from "../components/SiteLinkCallout.astro";
+import LinkCallout from "../components/LinkCallout.astro";
+
+import "../styles/sitePage.css";
+
+const LAST_UPDATED_DATE = new Date("2024-10-27 23:00");
+
+const DESCRIPTION = "This page is a summary of a few of my more significant ventures in life. It will be expanded and updated as time goes on.";
+
+function getUpdatedDateText(date: Date) {
+	const y = date.toLocaleDateString("en-us", { year: "numeric" });
+	const m = date.toLocaleDateString("en-us", { month: "short" });
+	const d = date.toLocaleDateString("en-us", { day: "numeric" });
+	return `${m} ${d}, ${y}`;
+}
+---
+<!doctype html>
+<html lang="en">
+<head>
+	<BaseHead metaTitle="Turtlemay's Projects" metaDescription={DESCRIPTION} />
+	<style>
+		main {
+			line-height: 1.8;
+		}
+
+		main > section:not(:first-of-type) {
+			padding: 0 0 2em;
+		}
+
+		main > section > section {
+			padding: 0 0 0.05em;
+		}
+
+		:is(h1, h2, h3, h4, h5, h6) {
+			line-height: 1.5;
+		}
+
+		h3 {
+			position: relative;
+			display: flex;
+			align-items: center;
+			&::before {
+				content: "";
+				height: 1em;
+				width: 10px;
+				background: #f5f5f5;
+				position: absolute;
+				left: -1.5em;
+			}
+		}
+
+		ul, li {
+			margin: 0;
+			padding: 0;
+		}
+
+		ul li {
+			list-style-type: "❖";
+			padding: 0 0 10px 10px;
+			margin: 0 0 0 15px;
+			&::marker {
+				color: #d9d9d9;
+			}
+		}
+
+		a {
+			text-decoration: inherit;
+			color: inherit;
+			font-weight: 500;
+			border-bottom: 2px solid #eee;
+			transition-duration: 200ms;
+			transition-property: filter;
+			&:hover {
+				filter: contrast(0.8);
+			}
+			&:active {
+				filter: brightness(0.8);
+			}
+		}
+
+		.brief {
+			font: italic 16px "Roboto";
+			color: #999;
+			text-align: center;
+			display: flex;
+			flex-direction: column;
+			padding: 4em 0;
+			& > * {
+				max-width: 400px;
+				margin: 0 auto;
+			}
+			& h1 {
+				font: bold 28px "Roboto";
+				display: inline-block;
+				text-align: left;
+				text-transform: uppercase;
+				font-style: normal;
+				color: #000;
+				&::before {
+					content: "✱";
+					color: #e0e0e0;
+					margin: 0 0.5em 0 0;
+				}
+				&::after {
+					content: "✱";
+					color: #e0e0e0;
+					margin: 0 0 0 0.5em;
+				}
+			}
+			& p {
+				display: inline-block;
+				padding: 1em 2em;
+				text-align: left;
+			}
+		}
+
+		h2 {
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			display: flex;
+			margin: 0 0 1.5em;
+			color: #999;
+			&::after {
+				content: "";
+				flex: 1;
+				border-bottom: 1px solid #e5e5e5;
+				align-self: center;
+				min-width: 100px;
+				margin: 0 0.5em;
+				margin-right: 0;
+			}
+		}
+
+		h3 {
+			display: flex;
+			gap: 0.5em;
+			flex-wrap: wrap;
+		}
+
+		h3 .date {
+			font-weight: normal;
+			color: #aaa;
+			display: flex;
+			gap: 0.5em;
+			&::before {
+				content: "❖";
+				display: inline-block;
+			}
+		}
+
+		.projectCallout {
+			width: 250px;
+			@media (width >= 700px) {
+				order: 1;
+				margin: 1em 0 1em 1em;
+				display: flex;
+				flex-direction: column;
+				gap: 1em;
+
+				:has(> &) {
+					display: grid;
+					grid-template-columns: auto auto;
+					gap: 1em;
+				}
+			}
+			@media (width < 700px) {
+				order: 1;
+				display: flex;
+				flex-direction: column;
+				gap: 1em;
+				margin: 1em 0 2em;
+
+				:has(> &) {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+				}
+			}
+		}
+
+		.endCallout {
+			margin: 4em 0;
+		}
+	</style>
+</head>
+<body>
+	<SiteLayout siteNavId="projects">
+		<main class="sitePage" data-pagefind-body>
+			<section class="brief">
+				<h1>My Projects</h1>
+				<p>{DESCRIPTION}</p>
+				<time class="updatedDate" datetime={LAST_UPDATED_DATE.toISOString()}>
+					Updated {getUpdatedDateText(LAST_UPDATED_DATE)}
+				</time>
+			</section>
+			<section>
+				<h2>Current Projects, Hobbies, and Activities</h2>
+				<section>
+					<aside class="projectCallout">
+						<LinkCallout id="bike-channel" />
+						<LinkCallout id="motorcycle-playlist" />
+					</aside>
+					<div>
+						<h3>Food Delivery <span class="date">2024–Present</span></h3>
+						<p>My current occupation. I deliver a few orders every day on <a href="/posts/bd125-2">my motorcycle</a>. The fuel economy and ease of parking give me the full benefits of this job. (You can see some of the gear I use on my <a href="/uses">uses page</a>.) It's minimum-stress work compared to my retail career and I can make my own schedule day by day and work in any city or neighborhood I want. Worth enough to keep me afloat while I explore my other avocations.</p>
+						<p>I upload a portion of my "dashcam" recordings to my bike <a href="https://www.youtube.com/@turtlemaybikes">YouTube channel</a>.</p>
+					</div>
+				</section>
+				<section>
+					<aside class="projectCallout">
+						<LinkCallout id="vibraphone" />
+					</aside>
+					<div>
+						<h3>Vibraphone <span class="date">2010–Present</span></h3>
+						<p>An underrated and highly expressive instrument (and one of the least portable). I play casually and practice a few times a week. I've played percussion on and off for many years in jazz and symphonic bands and studied basic music theory but always struggled with the application. I'm currently focusing on some waltz arrangements.</p>
+						<p>You can see some recordings on my <a href="https://www.youtube.com/playlist?list=PL9bQTvzU6APOz9F_NTzdnwvfPYD2mFFyE">YouTube playlist</a>.</p>
+					</div>
+				</section>
+			</section>
+			<section>
+				<h2>Ideas, Unfinished and Past Projects</h2>
+				<section>
+					<aside class="projectCallout">
+						<LinkCallout id="song-covers" />
+					</aside>
+					<div>
+						<h3>Instrumental rock covers <span class="date">2011–2016</span></h3>
+						<p>I played guitar and drums in high school and recorded a lot of straight Green Day and Tool covers. You can hear a selection on my <a href="https://www.youtube.com/playlist?list=PL9bQTvzU6APP5susKGsGjq8hJbUoplaxZ">YouTube playlist</a>.</p>
+					</div>
+				</section>
+				<section>
+					<aside class="projectCallout">
+						<LinkCallout id="ygolp" />
+					</aside>
+					<div>
+						<h3>Trading card game score calculator <span class="date">2013–2015</span></h3>
+						<p><i>YGOLP</i> was a scoreboard and calculator I developed for the Yu-Gi-Oh trading card game, which I played competitively at my local tabletop game shop every weekend while I was in high school. The app was built for Android and sold on the Play Store, earning me my first ever paycheck. I've never been a professional in the industry but you could say app development was technically my first job.</p>
+						<p>The project was retired after I left the TCG community. You can see some screenshots on my <a href="/posts/ygolp">archive page</a>.</p>
+					</div>
+				</section>
+				<section>
+					<h3>Photo-sharing social network <span class="date">2013–2014</span></h3>
+					<p><i>SnapTurtle</i> (all rights reserved) was a photo-sharing website I designed and prototyped with another programmer in 2013 shortly after the shutdown of <a rel="external" href="https://en.wikipedia.org/wiki/DailyBooth">DailyBooth</a>. Like DailyBooth, its focus was on uploading selfies and adding friends rather than general photography.</p>
+					<p>The project reached alpha stages with a complete UI but I ultimately determined it to be unsustainable and noncompetitive with other social networks available at the time. It was retired and disintegrated when my partner pulled out.</p>
+					<p>Despite my opinions of social media as of late, there may still be some life in the idea.</p>
+				</section>
+				<section>
+					<aside class="projectCallout">
+						<LinkCallout id="nebular-blue" />
+					</aside>
+					<div>
+						<h3>Earthbound-inspired game <span class="date">2013–2014</span></h3>
+						<p><i>Nebular Blue</i> was a planned RPG that I did some design, art, and development for when I was new to programming, taking heavy inspiration from the <a rel="external" href="https://en.wikipedia.org/wiki/Mother_(video_game_series)">Mother</a> series.</p>
+						<p>Part 1 follows the lives of two kids from Danger Falls, a valley mire town unknowingly built on a massive underground trap doomed to be sucked up into an extraterrestrial vivarium full of alien creatures and chimeras. Part 2 follows an astrophysicist and her partner who take part in the literal groundbreaking rescue mission.</p>
+						<p>The project was shelved due to incomplete writing and budget. You can see some art on my <a href="/posts/nebular-blue">archive page</a>.</p>
+					</div>
+				</section>
+				<section>
+					<aside class="projectCallout">
+						<LinkCallout id="neon-garden" />
+					</aside>
+					<div>
+						<h3>Geometry Wars inspired game <span class="date">2015–2016</span></h3>
+						<p><i>Neon Garden</i> was an arcade-style game that I did some development and animation for as a way of learning the <a rel="external" href="https://en.wikipedia.org/wiki/Unity_(game_engine)">Unity engine</a> (Unity 5 at the time). Gameplay consists of harvesting flower-like mandalas for energy and battling in fractal-like procedurally-generated arenas. It had a distinct aesthetic hinted at by the title.</p>
+						<p>The project was shelved due to technical challenges and lack of inspiration. You can see some screenshots on my <a href="/posts/neon-garden">archive page</a>.</p>
+					</div>
+				</section>
+				<section>
+					<aside class="projectCallout">
+						<LinkCallout id="retail-tools" />
+					</aside>
+					<div>
+						<h3>Cashier apps and tools<span class="date">2019–2024</span></h3>
+						<p>While working for various retailers I developed several browser scripts, apps, and cheatsheets to aid my own productivity in scanning and processing items for checkout and inventory. Since I no longer work retail, these tools are effectively retired, still available on <a href="https://github.com/turtlemay">my GitHub</a> under <i>organizations</i>.</p>
+					</div>
+				</section>
+				<section>
+					<h3>Open source development <span class="date">2013–Present</span></h3>
+					<p>I dabbled in open source web development for a while, learning to code and writing some node modules and development tools. You can see some past experiments on <a href="https://github.com/turtlemay">my GitHub</a>. I haven't worked on any major projects for a long time but I'm hoping this website will open the door to some more substantial work.</p>
+				</section>
+			</section>
+			<section>
+				<h2>Other Hobbies & Crafts</h2>
+				<ul>
+					<li><a href="/posts/coin-rings">Rings made from coins</a> — Punch out the center, fold and stretch to finger size.</li>
+					<li><a href="/posts/metal-stamping">Stamped metal keychains</a> — Metal stamp with a mallet, then patina, sand, and polish.</li>
+					<li><a href="/posts/shrink-film">Shrink-film charms</a> — Just print, cut out, and bake. Incredibly simple and versatile gift.</li>
+					<li><a href="/posts/shirt-painting">T-Shirt painting</a> — One of my middle school hobbies.</li>
+					<li><a href="/posts/cube-solving">Cube-solving</a> — More of a party trick than a hobby.</li>
+					<li><a href="/posts/digital-art">Digital Art</a> — I'm generally more of a developer and maker than an artist.</li>
+				</ul>
+			</section>
+			<section>
+				<h2>Downloads</h2>
+				<ul>
+					<li><a href="/posts/business-card">Business Card</a> — Rarely needed but still fun to show off.</li>
+				</ul>
+			</section>
+			<section>
+				More general life updates can be found on my <a href="/now">now page</a>.
+			</section>
+			<section class="endCallout">
+				<SiteLinkCallout text="Hire Me" href="/hire" />
+			</section>
+		</main>
+	</SiteLayout>
+</body>
+</html>

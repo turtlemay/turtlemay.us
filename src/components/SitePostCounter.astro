@@ -1,0 +1,67 @@
+---
+import { getCollection } from "astro:content";
+import { getPhotos } from "../photos";
+
+const posts = await getCollection("posts", v => !v.data.draft);
+const status = await getCollection("status", v => !v.data.draft);
+const photos = await getPhotos();
+---
+<div class="site-post-counter">
+	<div class="main-count">
+		<span class="text">Posts so far</span>
+		<span class="count">{posts.length}</span>
+	</div>
+	<div class="other-count">
+		<span>+</span>
+		<span><b>{status.length}</b> updates</span> and
+		<span><b>{photos.length}</b> photos</span>
+	</div>
+</div>
+
+<style>
+.site-post-counter {
+	background: #f5f5f5;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	padding: 2em;
+	border: 5px solid #eee;
+	border-left: 0;
+	border-right: 0;
+}
+
+.main-count {
+	text-align: center;
+	& .text {
+		display: block;
+		font: 16px "Roboto";
+		color: #444;
+		margin: 0;
+		text-transform: uppercase;
+	}
+	& .count {
+		display: block;
+		font: 60px "Roboto";
+		color: #000;
+		&::before, &::after {
+			display: inline-block;
+			content: "🎉";
+			font-size: 50px;
+			margin: 0 10px;
+		}
+		&::before {
+			transform: scaleX(-1);
+		}
+	}
+}
+
+.other-count {
+	font: 16px "Roboto";
+	text-align: center;
+	color: #999;
+	& b {
+		color: #666;
+	}
+}
+</style>

@@ -1,0 +1,92 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import SiteLinkCallout from "../components/SiteLinkCallout.astro";
+import MailCallout from "../components/MailCallout.astro";
+import { SITE_DESCRIPTION } from "../global";
+import { address } from "./mail.astro";
+
+import "../styles/sitePage.css";
+---
+<!doctype html>
+<html lang="en">
+<head>
+	<BaseHead metaTitle="Turtlemay's Homepage" metaDescription={SITE_DESCRIPTION} />
+	<style>
+		main {
+			padding: 60px 0;
+		}
+		
+		.home {
+			padding: 60px 0 60px 0;
+			text-align: center;
+		}
+
+		.mailLink {
+			display: inline-block;
+			transition-duration: 200ms;
+			transition-property: filter, transform;
+			&:active {
+				filter: opacity(0.8);
+				transform: scale(0.99);
+			}
+		}
+
+		.mailLink.scripted {
+			cursor: help;
+		}
+
+		.expandableDetail {
+			transition-duration: 200ms;
+			transition-property: opacity, transform;
+			&:not(.toggleOpen) {
+				pointer-events: none;
+				user-select: none;
+				opacity: 0;
+				transform: translateY(-5px);
+			}
+		}
+	</style>
+</head>
+<body>
+	<SiteLayout siteNavId="home">
+		<main class="sitePage" data-pagefind-body>
+			<section class="home">
+				<a class="mailLink" data-id="mailLink" href="/mail" title="Virtual mailing address">
+					<MailCallout address={address.join("\n")} />
+				</a>
+				<div class="expandableDetail" data-id="expandableDetail">
+					<p>
+						<a data-id="detailLink" href="/mail" title="Virtual mailing address">
+							What's this?
+						</a>
+					</p>
+				</div>
+			</section>
+			<section>
+				<SiteLinkCallout text="Enter" href="/turtlemay" />
+			</section>
+		</main>
+	</SiteLayout>
+</body>
+</html>
+
+<script>
+	const clickEl = document.querySelector(`[data-id="mailLink"]`);
+	const toggleEl = document.querySelector(`[data-id="expandableDetail"]`);
+	const hiddenLinkEl = document.querySelector(`[data-id="detailLink"]`);
+
+	clickEl?.classList.add("scripted");
+	hiddenLinkEl?.setAttribute("tabindex", "-1");
+
+	clickEl?.addEventListener("click", e => {
+		e.preventDefault();
+		if (toggleEl?.classList.contains("toggleOpen")) {
+			hiddenLinkEl?.setAttribute("tabindex", "-1");
+			toggleEl?.classList.remove("toggleOpen");
+		} else {
+			hiddenLinkEl?.removeAttribute("tabindex");
+			toggleEl?.classList.add("toggleOpen");
+		}
+	});
+</script>

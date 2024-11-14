@@ -1,0 +1,65 @@
+---
+import { Image } from "astro:assets";
+import LinkCallout from "./LinkCallout.astro";
+
+import image from "../assets/IMG_20210802_174954.jpg";
+---
+<div class="callout">
+	<div class="background" aria-hidden="true">
+		<Image src={image} alt="" width={500} />
+	</div>
+	<div class="content">
+		<LinkCallout id="nature-playlist" />
+	</div>
+</div>
+
+<style>
+.callout {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	.content {
+		position: relative;
+	}
+	.background {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		display: inline-flex;
+		align-items: center;
+		justify-content: flex-start;
+		filter: brightness(0.5);
+		pointer-events: none;
+		img {
+			object-fit: cover;
+			background: #111;
+		}
+	}
+	.content {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: rgba(0, 0, 0, 0.5);
+	}
+	.link {
+		padding: 15px 20px;
+	}
+	.text {
+		text-shadow: 1px 1px 5px #000;
+	}
+	.category-text {
+		color: #999;
+	}
+	.subject-text {
+		color: #fff;
+	}
+	.arrow svg {
+		fill: #999;
+	}
+}
+</style>

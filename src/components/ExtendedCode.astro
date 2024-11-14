@@ -1,0 +1,32 @@
+<code is="x-code"><slot /></code>
+
+<script>
+class ExtendedCode extends HTMLElement {
+	constructor() {
+		super();
+
+		this.spellcheck = false;
+
+		// Allow text cursor but prevent editing.
+		this.contentEditable = "true";
+		this.addEventListener("beforeinput", (e) => e.preventDefault());
+
+		// Select all text on focus, only for inline elements.
+		this.addEventListener("focus", (e) => {
+			if (e.target instanceof HTMLElement && !isTextBlock(e.target)) {
+				window.getSelection()?.selectAllChildren(e.target);
+			}
+		});
+	}
+}
+
+customElements.define("x-code", ExtendedCode, { extends: "code" });
+
+/**
+ * @returns Whether the element contains multiple lines of text.
+ */
+function isTextBlock(el: HTMLElement) {
+	const numLines = el.textContent?.split(/\r?\n|\r|\n/g).length ?? 0;
+	return numLines > 1;
+}
+</script>

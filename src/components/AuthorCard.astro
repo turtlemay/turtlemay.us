@@ -1,0 +1,137 @@
+---
+import { Image } from "astro:assets";
+import avatarImage from "../assets/turtlemay.jpg";
+---
+<div class="authorCard">
+	<div class="column-left">
+		<div class="avatar avatar__outer">
+			<div class="avatar__inner">
+				<Image src={avatarImage} alt="" width={100} />
+			</div>
+		</div>
+	</div>
+	<div class="column-right">
+		<div class="authorText">
+			<span class="written-by">Written by</span>
+			<span class="name">Thomas Mayer</span>
+			<span class="name-handle">Turtlemay</span>
+		</div>
+	</div>
+	<div class="authorSite">
+		<a href="/turtlemay" rel="author" title="Thomas Mayer">
+			<div class="dingbat" />
+		</a>
+	</div>
+</div>
+
+<style>
+.authorCard {
+	display: inline-block;
+	padding: 30px;
+	margin: 0 auto;
+	background: #f5f5f5;
+	border: 5px solid #eee;
+	border-left: 0;
+	border-right: 0;
+	width: 100%;
+	max-width: 300px;
+}
+
+:has(> :is(.column-left, .column-right)) {
+	display: inline-flex;
+	& .column-right {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex: 1;
+	}
+}
+
+.avatar__outer {
+	display: flex;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	overflow: hidden;
+	transform: rotate(-2deg);
+}
+
+.avatar__inner {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 70px;
+	height: 100px;
+	overflow: hidden;
+	border: 7px solid #fff;
+}
+
+.avatar img {
+	display: inline-block;
+	width: 80px;
+	height: auto;
+	margin: -10px 0 0 -8px;
+}
+
+.authorText {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 100%;
+	gap: 5px;
+}
+
+.authorText .written-by {
+	font: 300 12px "Roboto";
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	color: #999;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	&::before, &::after {
+		content: "";
+		width: 30px;
+		border-bottom: 1px solid #ddd;
+	}
+}
+
+.authorText .name {
+	font: 500 16px "Roboto";
+	color: #666;
+}
+
+.authorText .name-handle {
+	font: 16px "Roboto";
+	text-transform: lowercase;
+	color: #bbb;
+	&::before {
+		content: "@";
+		color: #ddd;
+	}
+}
+
+:has(> .authorSite) {
+	position: relative;
+}
+
+.authorSite {
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	font: 30px monospace;
+	color: #e5e5e5;
+	transition-duration: 200ms;
+	transition-property: filter, transform;
+	&:hover {
+		filter: brightness(0.8);
+	}
+	&:active {
+		transform: rotate(-20deg);
+	}
+}
+
+.authorSite .dingbat::after {
+	content: "𖤓";
+}
+</style>

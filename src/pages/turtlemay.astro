@@ -1,0 +1,115 @@
+---
+import { Image } from "astro:assets";
+import BaseHead from "../components/BaseHead.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import SiteLinkCallout from "../components/SiteLinkCallout.astro";
+import SitePostCounter from "../components/SitePostCounter.astro";
+import SocialMediaLinks from "../components/SocialMediaLinks/SocialMediaLinks.astro";
+import RecentPhotos from "../components/RecentPhotos.astro";
+
+import img from "../assets/IMG_0902-001.jpg";
+
+import "../styles/sitePage.css";
+
+const TITLE = "Turtlemay - About";
+const DESCRIPTION = "Software hobbyist since 2004, also dabbling in instrumental music. This is my space on the internet for various unfinished projects, experiments, pictures, and opinions.";
+---
+<!doctype html>
+<html lang="en">
+<head>
+	<BaseHead metaTitle={TITLE} metaDescription={DESCRIPTION} />
+	<style>
+		main {
+			margin: 2rem 0 20rem;
+			font: 16px "Roboto";
+			line-height: 1.8;
+		}
+
+		main hr {
+			border: 0;
+			border-bottom: 2px solid #eee;
+			margin: 2em auto;
+			width: 20%;
+		}
+
+		main > section {
+			margin-bottom: 2rem;
+		}
+
+		main samp {
+			background: #f9f9f9;
+			border: 1px solid #eee;
+			color: #000;
+			padding: 2px 6px;
+			margin: 0 2px;
+			font: inherit;
+			font-style: italic;
+			border-radius: 5px;
+		}
+
+		.mainImage {
+			display: inline-block;
+			box-sizing: border-box;
+			padding: 5px;
+			width: 100%;
+			border: 1px solid #eee;
+			& .image-container {
+				display: flex;
+				overflow: hidden;
+			}
+			& img {
+				width: 100%;
+				height: auto;
+				min-width: 550px;
+				font: 14px "Arial";
+				background: #fff;
+				color: #000;
+			}
+		}
+	</style>
+</head>
+<body>
+	<SiteLayout siteNavId="about">
+		<main class="sitePage turtlemay" data-pagefind-body>
+			<h1 hidden>{TITLE}</h1>
+			<section>
+				<a class="mainImage" href={img.src} title="Turtlemay">
+					<div class="image-container">
+						<Image alt="Turtlemay with bicycle on boardwalk by creek" src={img} width={1000} />
+					</div>
+				</a>
+			</section>
+			<section>
+				<h2 hidden>About Me</h2>
+				<p>Aaron Thomas Mayer, also known as <i>Turtlemay</i>.</p>
+				<p>{DESCRIPTION}</p>
+				<p>See what I'm currently up to on my <a href="/now">now page</a>.</p>
+				<SiteLinkCallout text="My Projects" href="/projects" />
+			</section>
+			<section>
+				<h2>About this site</h2>
+				<p>I started writing this website in October 2024 after a decade of largely avoiding social media and doing very little creative work whatsoever. It's likely to be messy for some time while I fill things out and find a healthy balance between professional requirements and entertaining personal content.</p>
+				<aside style="margin: 2em 0;">
+					<SitePostCounter />
+				</aside>
+				<p>For future updates you can subscribe via <a href="/rss">RSS</a>. If all goes as planned you might encounter such topics as technology, physics, music, web development, cycling, and motorcycle maintenance.</p>
+				<SiteLinkCallout text="Visit the blog" href="/posts" />
+			</section>
+			<section>
+				<h2>Recent Photos</h2>
+				<RecentPhotos />
+				<SiteLinkCallout text="Visit the gallery" href="/photos" />
+			</section>
+			<section>
+				<h2>Social Media Links</h2>
+				<SocialMediaLinks />
+			</section>
+			<section>
+				<h2>Contact & Business Inquiry</h2>
+				<p>Email professional inquiries to <samp title="turtlemay.us">business</samp> at this website's domain (not written here to avoid spam). You can also send mail to my <a href="/mail">virtual address</a>. For other purposes, see social media links above.</p>
+				<SiteLinkCallout text="Hire me" href="/hire" />
+			</section>
+		</main>
+	</SiteLayout>
+</body>
+</html>

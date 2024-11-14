@@ -1,0 +1,83 @@
+---
+import { getCollection } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import { SITE_TITLE } from "../global";
+
+import "../styles/sitePage.css";
+
+const items = await getCollection("archive", v => {
+	return import.meta.env.PROD ? v.data.draft !== true : true;
+});
+const itemsNewestFirst = items.sort((a, b) => {
+	return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+});
+---
+<!doctype html>
+<html lang="en">
+<head>
+	<BaseHead metaTitle={`${SITE_TITLE} - Archive`} metaDescription="Turtlemay's archived posts" />
+	<style>
+		.archivePage {
+			margin: 1em;
+			max-width: 400px;
+		}
+
+		h1 {
+			font-size: 1.5em;
+		}
+
+		ul li {
+			padding: 0 0 0 10px;
+			list-style-type: "❖";
+			&::marker {
+				color: #d9d9d9;
+			}
+		}
+
+		a {
+			text-decoration: inherit;
+			font-weight: 500;
+			color: inherit;
+			border-bottom: 2px solid #eee;
+			transition-duration: 200ms;
+			transition-property: filter;
+			&:hover {
+				filter: contrast(0.8);
+			}
+			&:active {
+				filter: brightness(0.8);
+			}
+		}
+
+		li a:visited {
+			color: #999;
+		}
+
+		nav {
+			font: 1em "Roboto";
+			display: flex;
+			gap: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div class="archivePage sitePage">
+		<main data-pagefind-body>
+			<h1>Turtlemay's Archived Posts</h1>
+			<p>This index is for posts not syndicated or featured in my blog. They usually consist of ancillary information linked to elsewhere or referenced in a conversation.</p>
+			<ul data-pagefind-ignore>
+				{itemsNewestFirst.map(v => (
+					<li>
+						<time aria-hidden="true" datetime={v.data.pubDate.toISOString()}></time>
+						<a href={`/posts/${v.slug}`}>{v.data.title}</a>
+					</li>
+				))}
+			</ul>
+		</main>
+		<nav>
+			<a href="/">Go home</a>
+			<a href="/posts">Other posts</a>
+		</nav>
+	</div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+---
+title: CSS "First Non-Empty" Element Selector
+description: A contrived CSS selector you don't want.
+pubDate: 2024-10-27 22:00 EST
+---
+## How to select the first non-empty element with CSS
+
+I recently had the occasion to formulate this ungodly conglomeration of a CSS selector. The use case was to homologize the space underneath a heading which might contain any arbitrary element with margin and padding.
+
+``` css
+/*
+	Select a non-empty element that is not
+	the subsequent sibling of a non-empty
+	element (in other words, the first one).
+*/
+:not(:empty):not(:not(:empty) ~ :not(:empty)) {
+}
+```
+
+If there is any more sane or readable way of accomplishing this, I could not find it as of October 2024.
+
+(You can try it with nesting ```:not(:empty)``` as ```&``` but the result is no more sensible than the expanded version.)
+
+### Example Case
+We want no space between the heading and content other than what we have explicitly defined, however we cannot control the content and may encounter any number of empty elements creating an unwanted space.
+
+``` html
+<h2>Heading</h2>
+<div>
+	<p class="empty"></p>
+	<p class="empty"></p>
+	<p>first content</p>
+	<p class="empty"></p>
+	<p>more content</p>
+</div>
+```
+
+Naturally the empty elements can simply be hidden:
+
+``` css
+h2 + * > :empty {
+	display: none;
+}
+```
+
+But that leaves the issue of the first non-empty element's model. Suppose we want to remove the top padding on this element only, but we cannot target it in any conventional way.
+
+We can hack our way there with something like this:
+
+``` html
+<h2>Heading</h2>
+<div>
+	<p class="empty"></p>
+	<p>select me</p> <!-- We need to target this and only this -->
+	<p>not me</p>
+</div>
+
+<style>
+/*
+ * Among the children of the element
+ * following h2, select the first non-empty.
+ */
+h2 + :not(:empty):not(:not(:empty) ~ :not(:empty)) {
+	/* Override top margin/padding, etc. */
+}
+</style>
+```
+
+### Alternate Example
+
+In the case of the heading and content being in the same scope, here is a possible solution (written using nesting syntax):
+``` html
+<section>
+	<h2>Heading</h2>
+	<p class="empty"></p>
+	<p>select me</p>
+	<p>not me</p>
+</section>
+
+<style>
+section {
+	:not(h2, :empty) {
+		h2 ~ &:not(& ~ &) {
+		}
+	}
+}
+</style>
+```
+
+This may seem like a contrived situation and a result of poor engineering but those who have been around through the early days of web development are no strangers to these sort of black magic fixes. Thankfully they are getting fewer and farther between.

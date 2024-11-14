@@ -1,0 +1,21 @@
+main :is(ul, li) {
+	list-style-type: none;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+main h2:not(:first-of-type) {
+	margin-top: 4em;
+}
+
+@media (width > 700px) {
+	#photoshop-digital-paintings ~ ul,
+	#green-day-fan-wallpaper ~ ul {
+		display: grid;
+		grid-template-columns: auto auto;
+		gap: 20px;
+		& :is(img, figure) {
+			margin: 0;
+		}
+	}
+}

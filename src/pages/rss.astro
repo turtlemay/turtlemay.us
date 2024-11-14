@@ -1,0 +1,141 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import SiteLinkCallout from "../components/SiteLinkCallout.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../global";
+
+import "../styles/sitePage.css";
+
+const FEED_URL = new URL("/rss.xml", Astro.site);
+---
+<!doctype html>
+<html lang="en">
+<head>
+	<BaseHead metaTitle={`${SITE_TITLE} - RSS Feed`} metaDescription={SITE_DESCRIPTION} />
+	<style>
+		main {
+			padding: 1rem 0 4rem;
+		}
+
+		section {
+			margin: 0 0 4rem;
+		}
+
+		.dingbat {
+			color: #e5e5e5;
+			user-select: none;
+		}
+
+		.urlBox {
+			padding: 0 10px;
+			border: 1px solid #e8e8e8;
+			border-radius: 5px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition-duration: 300ms;
+			transition-property: border, background;
+			&::before {
+				content: "🔗";
+				font: 14px "Roboto";
+				filter: grayscale(1);
+			}
+			& > *:first-child {
+				flex: 1;
+			}
+			&:focus-within {
+				border-color: #999;
+			}
+			&.copyActive {
+				border-color: rgb(50, 150, 50);
+				background: rgb(245, 255, 245);
+			}
+		}
+
+		.urlContent {
+			font: 14px "Roboto";
+			color: #333;
+			padding: 15px 10px;
+			margin: 0 5px 0 0;
+			outline: none;
+			text-wrap: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+
+		.copyBtn {
+			text-decoration: none;
+			padding: 8px 10px;
+			font: 12px "Roboto";
+			text-align: center;
+			background: #333;
+			color: #fff;
+			border-radius: 5px;
+			cursor: pointer;
+			user-select: none;
+			transition-duration: 200ms;
+			transition-property: filter;
+			&:active {
+				filter: contrast(0.6);
+			}
+		}
+	</style>
+</head>
+<body>
+	<SiteLayout siteNavId="rss">
+		<main class="sitePage" data-id="rss" data-pagefind-body>
+			<section>
+				<h1>RSS Subscription</h1>
+				<h2>Copy the feed URL to your RSS reader</h2>
+				<div class="urlBox" data-id="urlBox">
+					<div class="urlContent" data-id="urlContent" data-url={FEED_URL}>{FEED_URL}</div>
+					<a role="button" class="copyBtn" data-id="copyBtn" href={FEED_URL}>Copy URL</a>
+				</div>
+				<p>
+					RSS 2.0 compliant <span class="dingbat" aria-hidden="true">❖</span> <a rel="external" href={`http://www.feedvalidator.org/check.cgi?url=${FEED_URL}`}>Feed Validator</a>
+				</p>
+			</section>
+			<section>
+				<h2>What's this?</h2>
+				<p><a rel="external" href="https://aboutfeeds.com/">RSS feeds</a> are a standard data format for news reader applications. Updates to this site are syndicated to the above feed to be consumed by your RSS reader.</p>
+			</section>
+			<section class="endCallout">
+				<SiteLinkCallout text="Visit the blog" href="/posts" />
+			</section>
+		</main>
+	</SiteLayout>
+</body>
+</html>
+
+<script>
+const rootEl = document.querySelector('main[data-id="rss"]');
+const urlContentEl = rootEl?.querySelector('[data-id="urlContent"]');
+const url = urlContentEl?.getAttribute("data-url");
+
+// Click to select
+urlContentEl?.addEventListener("click", () => {
+	window.getSelection()?.selectAllChildren(urlContentEl);
+});
+
+// Click button to copy url
+const btnEl = rootEl?.querySelector('[data-id="copyBtn"]');
+btnEl?.addEventListener("click", e => {
+	e.preventDefault();
+
+	if (urlContentEl) {
+		const copyUrl = url ?? urlContentEl?.textContent;
+		// Doesn't work on mobile
+		try {
+			if (copyUrl) navigator.clipboard.writeText(copyUrl);
+		} catch (err) {
+			window.getSelection()?.selectAllChildren(urlContentEl);
+		}
+	}
+
+	// Transition
+	const transEl = rootEl?.querySelector('[data-id="urlBox"]');
+	transEl?.classList.add("copyActive");
+	const fn = () => transEl?.classList.remove("copyActive");
+	window.setTimeout(fn, 800);
+});
+</script>

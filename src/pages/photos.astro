@@ -1,0 +1,158 @@
+---
+import { Image } from "astro:assets";
+import BaseHead from "../components/BaseHead.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import SiteLinkCallout from "../components/SiteLinkCallout.astro";
+import GalleryEndCallout from "../components/GalleryEndCallout.astro";
+import { createPhotoTipText, getPhotos } from "../photos";
+
+import "../styles/sitePage.css";
+
+const DESCRIPTION = "A selection of interesting and uninteresting things I've encountered in my meager travels.";
+
+const photos = await getPhotos();
+---
+<!doctype html>
+<html lang="en">
+<head>
+	<BaseHead metaTitle="Turtlemay's Photography" metaDescription={DESCRIPTION} />
+	<style>
+		.photosPage {
+			padding: 0 0 8rem;
+		}
+
+		.brief {
+			text-align: center;
+			padding: 4em;
+			font: italic 14px "Roboto";
+			color: #999;
+			& > * {
+				display: inline-block;
+				text-align: left;
+				max-width: 400px;
+			}
+		}
+
+		ul, li {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		ul.images {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: 20px;
+			max-width: 1500px;
+			margin: 0 auto;
+		}
+
+		ul.images li {
+			width: 100%;
+			max-width: 300px;
+			aspect-ratio: 1;
+			border: 1px solid #eee;
+			padding: 10px;
+			box-sizing: border-box;
+			transition-duration: 200ms;
+			transition-property: border, filter;
+			@media (width < 600px) {
+				padding: 5px;
+				max-width: 150px;
+			}
+			&:hover {
+				border-color: #ddd;
+			}
+		}
+
+		ul.images li.spacer {
+			visibility: hidden;
+			padding: 0;
+			height: 0;
+		}
+
+		ul.images li a {
+			outline: none;
+		}
+
+		ul.images li .image-container {
+			width: 100%;
+			height: 100%;
+			transition-duration: 200ms;
+			transition-property: filter;
+			li:focus-within & {
+				filter: contrast(0.9) brightness(1.2);
+			}
+		}
+
+		ul.images li .image-container img {
+			object-fit: cover;
+			width: 100%;
+			height: 100%;
+			font: 14px "Arial";
+			background: #fff;
+			color: #000;
+		}
+
+		ul.images li:has(.indicator-icon) {
+			position: relative;
+			display: flex;
+			align-items: flex-end;
+			justify-content: flex-end;
+		}
+
+		ul.images li .indicator-icon {
+			position: absolute;
+			margin: 0 5px;
+			pointer-events: none;
+			&::after {
+				content: "⌨";
+				color: #fff;
+				text-shadow: #000 1px 0 5px;
+			}
+		}
+
+		.pageEndCallout {
+			margin: 100px 0;
+		}
+	</style>
+</head>
+<body>
+	<SiteLayout siteNavId="photos">
+		<div slot="upper" class="photosPage sitePage">
+			<main>
+				<div class="brief" data-pagefind-body>
+					<p>{DESCRIPTION}</p>
+				</div>
+				<ul class="images">
+					{photos.reverse().map(v => {
+						const tipText = createPhotoTipText(v);
+						return (
+							<li>
+								<div class="image-container">
+									<a href={`${v.href}#photo`}>
+										<Image src={v.image} alt={tipText} title={tipText} width={500} />
+									</a>
+								</div>
+								{v.caption && (
+									<div class="indicator-icon" />
+								)}
+							</li>
+						);
+					})}
+					<li class="galleryEndCallout" data-pagefind-body>
+						<GalleryEndCallout />
+					</li>
+					<li class="spacer" />
+					<li class="spacer" />
+					<li class="spacer" />
+				</ul>
+			</main>
+			<footer class="pageEndCallout">
+				<SiteLinkCallout text="Other Projects" href="/projects" />
+			</footer>
+		</div>
+	</SiteLayout>
+</body>
+</html>

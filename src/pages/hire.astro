@@ -1,0 +1,292 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import SiteLinkCallout from "../components/SiteLinkCallout.astro";
+import { SITE_TITLE } from "../global";
+import locationIcon from "../assets/location.svg?raw";
+
+import "../styles/sitePage.css";
+
+const LAST_UPDATED_DATE = new Date("2024-11-06 18:00");
+
+function getUpdatedDateText(date: Date) {
+	const y = date.toLocaleDateString("en-us", { year: "numeric" });
+	const m = date.toLocaleDateString("en-us", { month: "short" });
+	const d = date.toLocaleDateString("en-us", { day: "numeric" });
+	return `${m} ${d}, ${y}`;
+}
+---
+<!doctype html>
+<html lang="en">
+<head>
+	<BaseHead metaTitle={`${SITE_TITLE} - Hire Me`} metaDescription="Hire me for freelance or contract work" />
+	<style>
+		ul {
+			padding: 0;
+		}
+
+		li {
+			list-style-type: "❖";
+			padding: 0 0 0 10px;
+			margin: 0 0 0.5em 15px;
+			&::marker {
+				color: #d9d9d9;
+			}
+		}
+
+		h2 {
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			display: flex;
+			margin: 0 0 1em;
+			color: #999;
+			font: bold 20px "Roboto";
+			&::after {
+				content: "";
+				flex: 1;
+				border-bottom: 1px solid #e5e5e5;
+				align-self: center;
+				min-width: 100px;
+				margin: 0 0.5em;
+				margin-right: 0;
+			}
+		}
+
+		h3, h4, h5, h6 {
+			margin: 0;
+		}
+
+		.hirePageUpper {
+			padding: 4em var(--global-site-margin);
+			background: #111;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 1em;
+			h1 {
+				margin: 0;
+				font: bold 35px "Roboto";
+				color: #f5f5f5;
+				text-align: center;
+				text-wrap: balance;
+			}
+			p {
+				margin: 0;
+				font: 16px "Roboto";
+				color: #666;
+			}
+	}
+
+		@media (width < 500px) {
+			.hirePageUpper {
+				padding-top: 3em;
+				padding-bottom: 3em;
+				h1 {
+					font-size: 25px;
+				}
+			}
+		}
+
+		.hirePageLower {
+			margin: 2em 0;
+		}
+
+		main > section {
+			margin: 0 0 3em;
+			&:first-child {
+				margin: 2em 0 3em;
+			}
+		}
+
+		.remote-services-layout {
+			display: grid;
+			grid-template-columns: auto auto;
+			gap: 3em;
+			@media (width < 700px) {
+				grid-template-columns: auto;
+			}
+		}
+
+		.remote-services-overview {
+			background: #f9f9f9;
+			padding: 1em 2em;
+			border: 1px solid #eee;
+			border-radius: 5px;
+			> :last-child {
+				margin-bottom: 0;
+			}
+			ul {
+				--label-color: palevioletred;
+				li {
+					list-style-type: "⛰";
+					color: var(--label-color);
+					margin-bottom: 1em;
+					&::marker {
+						color: var(--label-color);
+					}
+				}
+				.label {
+					font-weight: bold;
+				}
+				.details {
+					display: block;
+					font: 14px "Roboto";
+					color: #333;
+					line-height: 1.8;
+				}
+			}
+		}
+
+		.local-work-heading > :first-child {
+			--sub-color: #666;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.25em;
+			.location {
+				display: inline-block;
+				color: var(--sub-color);
+			}
+			svg {
+				fill: var(--sub-color) !important;
+				height: 1em;
+				margin-bottom: -3px;
+			}
+		}
+
+		.local-services-layout {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 2em;
+			margin: 4em 0;
+			@media (width < 800px) {
+				grid-template-columns: auto;
+			}
+			> section {
+				display: grid;
+				grid-template-columns: auto auto;
+				gap: 1em;
+				> * {
+					margin: 0;
+				}
+				> :first-child {
+					width: 140px;
+					display: flex;
+					justify-content: flex-end;
+				}
+				.heading {
+					color: #111;
+					text-transform: uppercase;
+				}
+				p {
+					color: #666;
+				}
+			}
+		}
+
+		.end-callout {
+			margin: 8em 0 16em;
+		}
+	</style>
+</head>
+<body>
+	<SiteLayout>
+		<header class="hirePageUpper" slot="upper" data-pagefind-body>
+			<h1>Web Consultation, Services, and More</h1>
+			<p>Freelance and contract work</p>
+		</header>
+		<main class="hirePageLower sitePage" data-pagefind-body>
+			<section>
+				<p>You can hire me for your software project or other services outlined below.</p>
+				<p>Email me for availability and rates.</p>
+			</section>
+			<section>
+				<h2>Remote Work</h2>
+				<div class="remote-services-layout">
+					<div class="column">
+						<div class="remote-services-overview">
+							<h3 class="heading">Software Development</h3>
+							<ul>
+								<li>
+									<span class="label">Web Design & Prototyping</span>
+									<span class="details">Websites, blogs, user interfaces and themes.</span>
+								</li>
+								<li>
+									<span class="label">Full-Stack Web Development</span>
+									<span class="details">Web applications, browser extensions, userscripts, and server admin.</span>
+								</li>
+								<li>
+									<span class="label">Programming</span>
+									<span class="details">Desktop applications, general scripting and automation.</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="column">
+						<span>My top priorities in a software project:</span>
+						<ul>
+							<li>
+								<b>Performance</b> —
+								<span>Fast page loading and rendering.</span>
+							</li>
+							<li>
+								<b>Code Readability</b> —
+								<span>Clearly written source code with comments and documentation for future maintainability.</span>
+							</li>
+							<li>
+								<b>Mobile Responsive Design</b> —
+								<span>Fit any screen, browser, and device.</span>
+							</li>
+							<li>
+								<b>Avoid Lock-In</b> —
+								<span>No proprietary formats or excessive dependencies.</span>
+							</li>
+							<li>
+								<b>Bug-Free Guarantee</b> —
+								<span>Generous warranty for unexpected issues.</span>
+							</li>
+							<li>
+								<b>Permissive Licensing</b> —
+								<span>Minimal restrictions on the work I produce.</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+			<section>
+				<h2 class="local-work-heading">
+					<span>
+						<span>Local Work</span>
+						<span class="location">
+							<i set:html={locationIcon} />
+							<span>Columbus, OH</span>
+						</span>
+					</span>
+				</h2>
+				<p>General contracting and services for Columbus and surrounding areas.</p>
+				<div class="local-services-layout">
+					<section>
+						<h4 class="heading">Electronics</h4>
+						<p>I build and service all kinds of DC circuits and automotive wiring.</p>
+					</section>
+					<section>
+						<h4 class="heading">Bicycles</h4>
+						<p>I build and service all kinds of bicycles, e-bikes, trikes, mopeds, and trailers.</p>
+					</section>
+					<section>
+						<h4 class="heading">Motorcycles</h4>
+						<p>I service classic motorcycles, motor scooters, and small engines.</p>
+					</section>
+				</div>
+			</section>
+			<section>
+				<h2>Contact Me</h2>
+				<p>Send all professional inquiries to <samp title="turtlemay.us">business</samp> at this website's domain.</p>
+			</section>
+		</main>
+		<footer class="end-callout">
+			<SiteLinkCallout text="My Projects" href="/projects" />
+		</footer>
+	</SiteLayout>
+</body>
+</html>

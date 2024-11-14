@@ -1,0 +1,202 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import Image from "astro/components/Image.astro";
+import { getPhotos, createPhotoDateText, createPhotoTipText } from "../photos";
+import SiteLinkCallout from "../components/SiteLinkCallout.astro";
+import { SITE_TITLE } from "../global";
+
+export async function getStaticPaths() {
+	const arr = await getPhotos();
+	return arr.map(v => ({
+		params: { photo: `/photos/${v.basename}` },
+		props: { data: v }
+	}));
+}
+
+const photos = await getPhotos();
+const d = Astro.props.data;
+const tipText = createPhotoTipText(d);
+---
+<html lang="en">
+<head>
+	<BaseHead metaTitle={`${SITE_TITLE} - ${tipText}`} metaDescription={d.caption ?? tipText} />
+	<style>
+		a {
+			text-decoration: inherit;
+			color: inherit;
+		}
+
+		.imageFrame {
+			background: #090909;
+			padding: 4rem 2rem;
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 25px;
+			box-sizing: border-box;
+		}
+
+		.imageFrame img {
+			width: 1200px;
+			max-width: 100%;
+			height: auto;
+			color: #666;
+			font: 14px "Roboto";
+		}
+
+		.imageFrame .metaInfo {
+			box-sizing: border-box;
+			font: 500 14px "Roboto";
+			background: #111;
+			color: #666;
+			border: 1px solid #151515;
+			border-radius: 5px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-wrap: wrap;
+			gap: 20px;
+			padding: 5px 10px;
+		}
+
+		.imageFrame .metaInfo .date {
+			&::before {
+				content: "🗓️";
+				font: 1em monospace;
+				margin: 0 5px 0 0;
+				filter: grayscale(1) brightness(0.7);
+			}
+		}
+
+		.imageFrame .metaInfo .location {
+			&::before {
+				content: "🇺🇸";
+				font: 1em monospace;
+				margin: 0 5px 0 0;
+				filter: grayscale(1) brightness(0.7);
+			}
+		}
+
+		.imageFrame .metaInfo .camera {
+			text-transform: uppercase;
+			&::before {
+				content: "📷";
+				font: 1em monospace;
+				margin: 0 5px 0 0;
+				filter: grayscale(1) brightness(0.7);
+			}
+		}
+
+		.imageFrame .caption {
+			font: italic 14px "Roboto";
+			color: #666;
+		}
+
+		.photoNav {
+			--color: #666;
+			display: grid;
+			grid-template-columns: 1fr auto 1fr;
+			font: 14px "Roboto";
+			text-transform: uppercase;
+			color: var(--color);
+			margin: 2em 0;
+			& > .left {
+				text-align: left;
+			}
+			& > .right {
+				text-align: right;
+			}
+		}
+
+		.photoNav .navLink {
+			display: inline-flex;
+			gap: 10px;
+			transition-duration: 200ms;
+			transition-property: filter, transform;
+			&.left {
+				flex-direction: row-reverse;
+			}
+			&:hover {
+				filter: contrast(0.8);
+			}
+			&:active {
+				transform: scale(0.95);
+			}
+		}
+
+		.photoNav .arrow {
+			width: 1em;
+			height: 1em;
+		}
+
+		.photoNav .arrow svg {
+			fill: var(--color);
+			.arrow.left:has(&) {
+				transform: rotate(180deg);
+			}
+		}
+
+		.endCallout {
+			margin: 4rem 0 8rem;
+		}
+	</style>
+</head>
+<body>
+	<SiteLayout siteNavId="photos">
+		<main class="imageFrame" slot="upper" data-pagefind-body>
+			<div class="metaInfo" id="photo">
+				{d.cameraModel && (
+					<span class="camera">{d.cameraModel}</span>
+				)}
+				<span class="date">
+					<time datetime={d.date.toISOString()}>
+						{createPhotoDateText(d.date)}
+					</time>
+				</span>
+				{d.location && (
+					<span class="location">{d.location}</span>
+				)}
+			</div>
+			<a href={d.image.src}>
+				<Image src={d.image} alt={tipText} title={tipText} width={1500} />
+			</a>
+			{d.caption && (
+				<div class="caption">
+					<span>{d.caption}</span>
+				</div>
+			)}
+		</main>
+		<nav class="photoNav">
+			<div class="left">
+				{d.prevItem && (
+					<a class="navLink left" title="Previous photo" href={`${d.prevItem.href}#photo`}>
+						<span role="presentation">Prev</span>
+						<span class="arrow left" aria-hidden="true">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><path d="M988.4,496.8l0.5-0.5L743.2,251.5l-48.9,49.1l162.6,162H10v69.5h848l-162.6,162l48.9,49.1L990,498.4L988.4,496.8z"></path></svg>
+						</span>
+					</a>
+				)}
+			</div>
+			<div class="photoNumber" aria-label={`Photo number ${d.photoNumber} out of ${photos.length}`}>
+				{d.photoNumber} / {photos.length}
+			</div>
+			<div class="right">
+				{d.nextItem && (
+					<a class="navLink right" title="Next photo" href={`${d.nextItem.href}#photo`}>
+						<span role="presentation">Next</span>
+						<span class="arrow right" aria-hidden="true">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><path d="M988.4,496.8l0.5-0.5L743.2,251.5l-48.9,49.1l162.6,162H10v69.5h848l-162.6,162l48.9,49.1L990,498.4L988.4,496.8z"></path></svg>
+						</span>
+					</a>
+				)}
+			</div>
+		</nav>
+		<footer class="endCallout">
+			<SiteLinkCallout text="More Photos" href="/photos" />
+		</footer>
+	</SiteLayout>
+</body>
+</html>

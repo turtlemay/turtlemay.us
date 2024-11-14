@@ -1,0 +1,53 @@
+---
+import { getCollection } from "astro:content";
+import Blog from "../layouts/Blog.astro";
+import BlogIndex from "../components/BlogIndex.astro";
+import SiteLinkCallout from "../components/SiteLinkCallout.astro";
+
+const items = (await getCollection("posts", v => {
+	return import.meta.env.PROD ? v.data.draft !== true : true;
+})).sort((a, b) => {
+	return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+});
+
+const years = (
+	items.map(v => v.data.pubDate.getFullYear())
+		.filter((year, i, a) => a.indexOf(year) === i)
+);
+---
+<Blog blogNavId="blog-posts">
+	<Fragment slot={items.length > 0 && "content"}>
+		<main data-pagefind-body>
+			<h1 hidden>Blog Posts</h1>
+			<div data-pagefind-ignore>
+				{years.map(year => (
+					<h2 class="yearHeading">{year}</h2>
+					<BlogIndex posts={items.filter(v => v.data.pubDate.getFullYear() === year)} />
+				))}
+			</div>
+		</main>
+		<footer class="endCallout">
+			<SiteLinkCallout text="Status Updates" href="/status" />
+		</footer>
+	</Fragment>
+</Blog>
+
+<style>
+.yearHeading {
+	font: italic 300 20px "Roboto";
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	color: #ccc;
+	&::before, &::after {
+		content: "";
+		border-bottom: 1px solid #eee;
+		width: 30px;
+	}
+}
+
+.endCallout {
+	margin: 80px 0;
+}
+</style>

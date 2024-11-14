@@ -1,0 +1,137 @@
+---
+import facebookIcon from "./facebook.svg?raw";
+import githubIcon from "./github.svg?raw";
+import redditIcon from "./reddit.svg?raw";
+import youtubeIcon from "./youtube.svg?raw";
+
+const mylinks = [{
+	label: "YouTube", icon: youtubeIcon,
+	detail: "youtube.com/@turtlemay",
+	href: "https://youtube.com/@turtlemay",
+}, {
+	label: "GitHub", icon: githubIcon,
+	detail: "github.com/turtlemay",
+	href: "https://github.com/turtlemay",
+}, {
+	label: "Facebook", icon: facebookIcon,
+	detail: "fb.com/turtlemay",
+	href: "https://fb.com/turtlemay",
+}, {
+	label: "Reddit", icon: redditIcon,
+	detail: "reddit.com/user/turtlemay",
+	href: "https://reddit.com/user/turtlemay",
+}];
+---
+<ul>
+	{mylinks.map(v => (
+		<li>
+			<a href={v.href}>
+				<div class="content">
+					<div class="label">
+						<span class="icon" aria-hidden="true">
+							<span class="socialMediaIcon" set:html={v.icon}></span>
+						</span>
+						<span class="text">{v.label}</span>
+					</div>
+					<div class="detail">{v.detail}</div>
+				</div>
+				<div class="arrow" />
+			</a>
+		</li>
+	))}
+</ul>
+
+<style>
+ul {
+	list-style-type: none;
+	padding: 0;
+	display: grid;
+	gap: 1em;
+	@media (width < 600px) {
+		grid-template-columns: auto;
+	}
+	@media (width >= 600px) {
+		grid-template-columns: auto auto;
+	}
+}
+
+li {
+	container-name: list-item-container;
+	container-type: inline-size;
+	background: #f9f9f9;
+	border: 1px solid #eee;
+	border-radius: 5px;
+	overflow: hidden;
+	transition-duration: 200ms;
+	transition-property: filter, transform, border;
+	&:hover, &:focus-within {
+		filter: contrast(0.95);
+	}
+	&:active {
+		transform: scale(0.99);
+	}
+}
+
+li a {
+	height: 100%;
+	display: flex;
+	text-decoration: inherit;
+	color: inherit;
+	> :first-child {
+		flex: 1;
+	}
+}
+
+li .content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 5px;
+	padding: 20px 40px;
+	overflow: hidden;
+}
+
+li .arrow {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #f5f5f5;
+	padding: 0 30px;
+	&::after {
+		content: "";
+		width: 15px;
+		height: 15px;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z'/%3E%3Cpath fill-rule='evenodd' d='M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z'/%3E%3C/svg%3E");
+		background-repeat: no-repeat;
+		background-size: contain;
+		filter: opacity(0.3);
+	}
+	@container list-item-container (width < 300px) {
+		display: none;
+	}
+}
+
+li .label {
+	font: 500 16px "Roboto";
+	color: #111;
+}
+
+li .icon {
+	margin: 0 2px 0 0;
+}
+
+li .detail {
+	font: 14px "Roboto";
+	color: #999;
+	text-wrap: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+</style>
+
+<style is:global>
+.socialMediaIcon svg {
+	width: 0.8em;
+	fill: #111 !important;
+}
+</style>
