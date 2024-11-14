@@ -302,11 +302,6 @@ footer > section.right {
 <script>
 const scrollTopEl = document.querySelector("a[data-scroll-top]");
 
-scrollTopEl?.addEventListener("click", e => {
-	e.preventDefault();
-	window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
 updateScrollTopState();
 
 document.addEventListener("scroll", (() => {
