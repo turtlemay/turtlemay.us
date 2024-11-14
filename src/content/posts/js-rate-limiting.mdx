@@ -1,0 +1,131 @@
+---
+title: JavaScript UI Event Rate Limiting
+description: Quick tip for throttling and debouncing JavaScript events.
+pubDate: 2024-11-14 15:00 EST
+---
+
+Capturing JavaScript events such as a window resize or document scroll can result in dozens of events fired in succession for a single user action. It may be useful to limit this rate for expensive function calls or UI purposes such as animations or committing the value of a scripted text field after user input.
+
+Here is a quick inline implementation of this rate limiting for event listeners.
+We use a
+[closure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)
+to neatly encapsulate our event listener via an
+[IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE).
+[^closures]
+
+Let `D_TIME` be the minimum interval in milliseconds between function calls.
+
+## Option 1: Debounce
+
+This calls your function after `D_TIME` has elapsed *without* the event firing. This method is known as
+[debouncing](https://developer.mozilla.org/en-US/docs/Glossary/Debounce),
+not to be confused with *throttling*. Excess calls are discarded rather than queued. Most UI-related cases will probably use this.
+
+``` javascript
+document.addEventListener("scroll", ((D_TIME = 250) => {
+	let timeout = 0;
+
+	return () => {
+		window.clearTimeout(timeout);
+		timeout = window.setTimeout(fn, D_TIME);
+	};
+
+	/** Your function */
+	function fn() {
+		console.count(fn.name);
+	}
+})());
+```
+
+## Option 2: Throttle
+
+This calls your function immediately, only if `D_TIME` has elapsed since last call. This is a method of *throttling*. Excess calls are still discarded.
+
+``` javascript
+document.addEventListener("scroll", ((D_TIME = 250) => {
+	let lastTime = 0;
+
+	return () => {
+		if (Date.now() - lastTime < D_TIME) return;
+		lastTime = Date.now();
+		fn();
+	};
+
+	/** Your function */
+	function fn() {
+		console.count(fn.name);
+	}
+})());
+```
+
+## Option 3 (Combined)
+
+The above two combined, resulting in a steady series with an additional final call at the end:
+
+``` javascript
+document.addEventListener("scroll", ((D_TIME = 250) => {
+	let timeout = 0, lastTime = 0;
+
+	return () => {
+		window.clearTimeout(timeout);
+		timeout = window.setTimeout(fn, D_TIME);
+		if (Date.now() - lastTime < D_TIME) return;
+		lastTime = Date.now();
+		fn();
+	};
+
+	/** Your function */
+	function fn() {
+		console.count(fn.name);
+	}
+})());
+```
+
+Alternatively, the same combined example using the parent scope instead of a closure:
+[^closures]
+
+``` javascript
+const D_TIME = 250;
+let timeout = 0;
+let lastTime = 0;
+
+document.addEventListener("scroll", () => {
+	window.clearTimeout(timeout);
+	timeout = window.setTimeout(fn, D_TIME);
+	if (Date.now() - lastTime < D_TIME) return;
+	lastTime = Date.now();
+	fn();
+});
+
+/** Your function */
+function fn() {
+	console.count(fn.name);
+}
+```
+
+## Option 4: Queue
+
+This is an entirely separate scenario from the above. I have again used a scroll listener, only to represent an arbitrary rapid series of events. Rather than discarding excess calls, every invocation is queued and processed in order at interval `D_TIME`. 
+
+``` javascript
+document.addEventListener("scroll", ((D_TIME = 250) => {
+	const queue = [];
+	let interval = setInterval(() => queue.shift()?.(), D_TIME);
+
+	return () => queue.push(fn);
+
+	/** Your function */
+	function fn() {
+		console.count(fn.name);
+	}
+})());
+```
+
+You could length-limit `queue`, clear/restart `interval` as needed, or replace the interval timer with some other coroutine from your application.
+
+[^closures]: I'm a huge fan of IIFE closures for creating an
+[object-like](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object-oriented_programming)
+scope with
+[hoisted function](https://www.w3schools.com/js/js_hoisting.asp)
+"methods" for readability (and to avoid polluting global/module scopes).
+Since excessive indentation tends to hurt maintainability I generally only use them at one nesting level where a function reference is already needed.
