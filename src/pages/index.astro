@@ -51,6 +51,10 @@ import "../styles/sitePage.css";
 <body>
 	<SiteLayout siteNavId="home">
 		<main class="sitePage" data-pagefind-body>
+			<section hidden>
+				<h1>Aaron Thomas Mayer</h1>
+				<p>{SITE_DESCRIPTION}</p>
+			</section>
 			<section class="home" data-nosnippet>
 				<a class="mailLink" data-id="mailLink" href="/mail" title="Virtual mailing address">
 					<MailCallout address={address.join("\n")} />
