@@ -10,8 +10,8 @@ const { siteNavId: active } = Astro.props;
 		<nav>
 			<section class="left">
 				<div class="navList">
-					<a class="navItem" class:list={{ navActive: "blog" === active }} href="/posts">Blog</a>
-					<a class="navItem" class:list={{ navActive: "photos" === active }} href="/photos">Photos</a>
+					<div class="navItem" class:list={{ navActive: "blog" === active }}><a href="/posts">Blog</a></div>
+					<div class="navItem" class:list={{ navActive: "photos" === active }}><a href="/photos">Photos</a></div>
 				</div>
 			</section>
 			<section class="middle turtlemay">
@@ -22,8 +22,8 @@ const { siteNavId: active } = Astro.props;
 			</section>
 			<section class="right">
 				<div class="navList">
-					<a class="navItem" class:list={{ navActive: "projects" === active }} href="/projects">Works</a>
-					<a class="navItem" class:list={{ navActive: "about" === active }} href="/turtlemay">About</a>
+					<div class="navItem" class:list={{ navActive: "projects" === active }}><a href="/projects">Works</a></div>
+					<div class="navItem" class:list={{ navActive: "about" === active }}><a href="/turtlemay">About</a></div>
 				</div>
 			</section>
 		</nav>
