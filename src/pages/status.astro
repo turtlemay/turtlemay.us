@@ -12,7 +12,7 @@ const items = (await getCollection("status", v => {
 	return b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 });
 ---
-<Blog blogNavId="status-posts">
+<Blog pageTitle="Turtlemay's Status Updates" blogNavId="status-posts">
 	<Fragment slot={items.length > 0 && "content"}>
 		<main class="statusPage" data-pagefind-body>
 			<h1>Status Updates</h1>
