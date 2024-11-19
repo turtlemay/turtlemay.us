@@ -4,6 +4,7 @@ import Blog from "../layouts/Blog.astro";
 import StatusItem from "../components/StatusItem.astro";
 import AuthorCard from "../components/AuthorCard.astro";
 import SiteLinkCallout from "../components/SiteLinkCallout.astro";
+import { SITE_TITLE } from "../global";
 
 import "../styles/statusPage.css";
 
@@ -20,8 +21,15 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<"status">;
 
 const { Content } = await Astro.props.render();
+
+function getPageTitle() {
+	const title = Astro.props.data.title;
+	const date = Astro.props.data.pubDate;
+	const d = date.toLocaleDateString("en-us", { year: "numeric", month: "short", day: "numeric" });
+	return `${title ?? d} ❖ ${SITE_TITLE}`;
+}
 ---
-<Blog blogNavId="status-posts">
+<Blog pageTitle={getPageTitle()} blogNavId="status-posts">
 	<Fragment slot="content">
 		<main class="statusPage" data-pagefind-body>
 			<StatusItem {...Astro.props}>
