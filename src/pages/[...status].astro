@@ -28,8 +28,15 @@ function getPageTitle() {
 	const d = date.toLocaleDateString("en-us", { year: "numeric", month: "short", day: "numeric" });
 	return `${title ?? d} ❖ ${SITE_TITLE}`;
 }
+
+function getPageDescription() {
+	const desc = Astro.props.data.description;
+	const date = Astro.props.data.pubDate;
+	const d = date.toLocaleDateString("en-us", { year: "numeric", month: "short", day: "numeric" })
+	return desc ?? `Status update by Turtlemay on ${d}`;
+}
 ---
-<Blog pageTitle={getPageTitle()} blogNavId="status-posts">
+<Blog pageTitle={getPageTitle()} pageDescription={getPageDescription()} blogNavId="status-posts">
 	<Fragment slot="content">
 		<main class="statusPage" data-pagefind-body>
 			<StatusItem {...Astro.props}>

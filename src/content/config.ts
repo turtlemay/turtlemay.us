@@ -28,6 +28,7 @@ export const collections = {
 		schema: () => z.object({
 			draft: z.boolean().optional(),
 			title: z.string().optional(),
+			description: z.string().optional(),
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 		}),
