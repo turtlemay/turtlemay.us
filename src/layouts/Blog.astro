@@ -5,16 +5,20 @@ import BlogNav from "../components/BlogNav.astro";
 
 interface Props {
 	pageTitle?: string;
+	pageDescription?: string;
 	blogNavId?: string;
 }
 
 const TITLE = "Turtlemay's Blog";
 const DESCRIPTION = "A tiny blog of short thoughts and guides on tech, media, life, and other dull topics, written by Turtlemay.";
+
+const getPageTitle = () => Astro.props.pageTitle ?? TITLE;
+const getPageDescription = () => Astro.props.pageDescription ?? DESCRIPTION;
 ---
 <!doctype html>
 <html lang="en">
 <head>
-	<BaseHead metaTitle={Astro.props.pageTitle ?? TITLE} metaDescription={DESCRIPTION} />
+	<BaseHead metaTitle={getPageTitle()} metaDescription={getPageDescription()} />
 	<style>
 		a {
 			text-decoration: inherit;
