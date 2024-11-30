@@ -5,6 +5,7 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import LinkCopyButton from "../components/LinkCopyButton.astro";
 import BlogImage from "../components/BlogImage.astro";
+import SeriesIntro from "../components/SeriesIntro.astro";
 
 import "../styles/blogPost.css";
 
@@ -59,6 +60,9 @@ const { Content } = await Astro.props.render();
 					</div>
 				</header>
 				<div class="blogPost__postContent" data-pagefind-body>
+					{d.series && (
+						<SeriesIntro series={d.series.slug} />
+					)}
 					<Content components={{ img: BlogImage }} />
 				</div>
 				<footer>

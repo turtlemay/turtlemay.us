@@ -1,0 +1,93 @@
+---
+import { getEntry } from "astro:content";
+
+interface Props {
+	series: string;
+}
+
+const entry = await getEntry("series", Astro.props.series);
+
+if (!entry) throw new Error(`Entry "${Astro.props.series}" not found.`);
+
+const { Content } = await entry.render();
+const { data: d } = entry;
+
+const numPosts = d.posts.length;
+const pluralPosts = numPosts > 1;
+---
+<section class="series-intro">
+	<div class="heading-line">
+		<h3 class="heading" role="heading" aria-level="2">{d.title}</h3>
+	</div>
+	<Content />
+	<details open>
+		<summary>
+			{numPosts} {pluralPosts ? "posts" : "post"} in this series
+		</summary>
+		<ul>
+			{d.posts.map(async v => {
+				const { data: dd } = await getEntry("posts", v.slug);
+				return (
+					<li>
+						<a href={`/posts/${v.slug}`}>{dd.title}</a> —
+						{dd.description}
+					</li>
+				);
+			})}
+		</ul>
+	</details>
+</section>
+
+<style>
+	.series-intro {
+		padding: 1em 2em;
+		margin: 1em 0 2em;
+		background: #f9f9f9;
+		color: #666;
+		border: 6px solid #f5f5f5;
+		border-left: 0;
+		border-right: 0;
+		font-family: "Roboto";
+		font-style: normal;
+		font-size: inherit;
+		line-height: 1.5em;
+	}
+
+	.heading-line {
+		margin: 0 0 1em;
+		> * {
+			display: inline-block;
+		}
+	}
+
+	.heading {
+		margin: 0;
+		&::before {
+			content: "🗂️";
+			margin-right: 0.25em;
+			filter: grayscale(1);
+		}
+	}
+
+	details > summary {
+		font-weight: bold;
+		color: palevioletred;
+		cursor: pointer;
+		transition-duration: 200ms;
+		transition-property: filter;
+		&::marker {
+			color: #444;
+		}
+		&:active {
+			filter: opacity(0.8);
+		}
+	}
+
+	details ul {
+		margin: 1em 0 1em 1em;
+	}
+
+	details li {
+		margin-bottom: 0.5em;
+	}
+</style>
