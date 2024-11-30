@@ -1,0 +1,89 @@
+---
+title: AutoHotkey Introduction
+description: An intro to my forthcoming series on the AutoHotkey scripting platform.
+pubDate: 2024-11-30 12:30 EST
+series: ahk-series
+---
+[AutoHotkey](https://www.autohotkey.com/)
+serves many purposes on my Windows machines, including rebinding keyboard keys, launching console commands, entering text into forms, and producing common unicode symbols. The following is just a basic overview of the tool, and in future posts I will be sharing how I use it to improve my workflow.
+
+See the official docs for a
+[beginner tutorial](https://www.autohotkey.com/docs/v2/Tutorial.htm).
+
+## What is AHK used for?
+
+AHK offers the ability to quickly set up keyboard shortcuts and automate the entry of text, special characters & symbols, emulate mouse functions, launch programs, and manipulate running windows programmatically—such tasks that would otherwise require setting up a development environment using either native APIs or some other more robust programming language.
+
+AHK scripts are easy to write and share between Windows systems, requiring only a text editor. Since they are dependent on your own habits and equipment, your scripts can be highly personal and grow with you over time. Once you've customized a few hotkeys, they can quickly become an indispensable part of any industry's workflow.
+
+## How to use AHK scripts
+
+Like other dynamic scripting languages, AHK consists of a simple
+[runtime](https://www.autohotkey.com/download/)
+which reads script files produced by any text editor. Your `.ahk` scripts are launchable from the file explorer or command line and can be run in parallel or modularized, and synced between machines. (I prefer one master script which runs at startup,
+[including](https://www.autohotkey.com/docs/v2/lib/_Include.htm)
+all my other modules rather than starting multiple instances of the program.)
+
+AHK generally uses a declarative syntax specialized for expressing the kinds of shortcuts mentioned above. Symbols are used to denote [modifier keys](https://www.autohotkey.com/docs/v2/Hotkeys.htm#Symbols).
+
+Example of a simple hotkey:
+
+``` scheme
+; Hold Windows key and scroll to adjust volume by emulating media keys
+#WheelUp::   Send("{Volume_Up}")
+#WheelDown:: Send("{Volume_Down}")
+```
+
+Hotkeys for starting applications:
+
+``` scheme
+; Press Ctrl+Alt+C to open a command line
+^!c:: Run("powershell")
+
+; Press Windows+Alt+V to open the Windows volume mixer
+#!v:: Run("sndvol.exe")
+```
+
+Add any combination of these expressions to a `.ahk` file to create your own script.
+
+Although it is not designed to be a general-purpose scripting language, AHK also provides some flow control and other imperative programming constructs for creating basic applications:
+
+``` scheme
+; Press and hold CapsLock to click the left mouse button repeatedly
+CapsLock::
+{
+	while GetKeyState("CapsLock", "P") {
+		SetCapsLockState("AlwaysOff")
+		SendInput("{LButton}")
+		Sleep(100)
+	}
+}
+```
+
+Example of named variable / function and opening an information window:
+
+``` scheme
+; Press Alt + Spacebar to show a message box
+!Space:: MyFunction
+
+MyFunction() {
+	MyString := "Hello world"
+	MsgBox(MyString, "My Message Box", "Ok")
+}
+```
+
+These constructs along with the
+[Gui constructor](https://www.autohotkey.com/docs/v2/lib/Gui.htm)
+can also create rudimentary graphical interfaces (not unlike the early days of Visual Basic for Windows—mechanically speaking—and without the compilation step). Although it is technically possible to compile a user application with AHK, these features are more likely to be used for controlling your own macros as an alternative to repeatedly editing your script files.
+
+----
+
+Check out other examples in the
+[official script showcase](https://www.autohotkey.com/docs/v2/scripts/),
+[AHK forums](https://www.autohotkey.com/boards/viewforum.php?f=83),
+and
+[Rosetta Code wiki](https://rosettacode.org/wiki/Category:AutoHotkey),
+or get started with the
+[AutoHotkey v2 docs](https://www.autohotkey.com/docs/v2/).
+
+And with that out of the way, future posts in this series will include my own tips, usage, and snippets from my workstation which you can adapt to your own workflow.
