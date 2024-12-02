@@ -52,6 +52,17 @@ export const collections = {
 			url: z.string().url(),
 		}),
 	}),
+	games: defineCollection({
+		type: "data",
+		schema: ({ image }) => z.object({
+			title: z.string(),
+			author: z.string(),
+			year: z.string(),
+			description: z.string(),
+			cover: image(),
+			url: z.string().url(),
+		}),
+	}),
 	links: defineCollection({
 		type: "data",
 		schema: ({ image }) => z.object({
