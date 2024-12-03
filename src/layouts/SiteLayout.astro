@@ -332,8 +332,10 @@ function updateScrollTopState() {
 	);
 	if (scrollable) {
 		scrollTopEl?.classList.add("scroll-top-enabled");
+		scrollTopEl?.setAttribute("tabindex", "0");
 	} else {
 		scrollTopEl?.classList.remove("scroll-top-enabled");
+		scrollTopEl?.setAttribute("tabindex", "-1");
 	}
 }
 </script>
