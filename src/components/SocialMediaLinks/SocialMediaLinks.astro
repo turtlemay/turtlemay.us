@@ -64,6 +64,9 @@ li {
 	overflow: hidden;
 	transition-duration: 200ms;
 	transition-property: filter, transform, border;
+	&:has(:focus-visible) {
+		outline: auto;
+	}
 	&:hover, &:focus-within {
 		filter: contrast(0.95);
 	}
