@@ -75,10 +75,16 @@ const { Content } = await Astro.props.render();
 
 <script>
 const dialogEl = document.querySelector<HTMLDialogElement>(".blogPost__postTipDialog");
-const openDialogEl = document.querySelector(".blogPost__postTip");
+const openDialogEl = document.querySelector<HTMLElement>(".blogPost__postTip");
 
 openDialogEl?.addEventListener("click", _e => {
 	dialogEl?.show();
+});
+
+openDialogEl?.addEventListener("keydown", e => {
+	if (e.key === "Enter") {
+		dialogEl?.show();
+	}
 });
 
 dialogEl?.addEventListener("focusout", _e => {
