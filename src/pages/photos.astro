@@ -64,6 +64,9 @@ const photos = await getPhotos();
 			&:hover {
 				border-color: #ddd;
 			}
+			&:has(:focus-visible):has(.image-link) {
+				outline: auto;
+			}
 		}
 
 		ul.images li.spacer {
@@ -131,7 +134,7 @@ const photos = await getPhotos();
 						return (
 							<li>
 								<div class="image-container">
-									<a href={`${v.href}#photo`}>
+									<a class="image-link" href={`${v.href}#photo`}>
 										<Image src={v.image} alt={tipText} title={tipText} width={500} />
 									</a>
 								</div>
