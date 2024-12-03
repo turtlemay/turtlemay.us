@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import avatarImage from "../assets/turtlemay.jpg";
 ---
-<div class="authorCard">
+<div class="authorCard" aria-description="Author information">
 	<div class="column-left">
 		<div class="avatar avatar__outer">
 			<div class="avatar__inner">
@@ -18,7 +18,7 @@ import avatarImage from "../assets/turtlemay.jpg";
 		</div>
 	</div>
 	<div class="authorSite">
-		<a href="/turtlemay" rel="author" title="Thomas Mayer">
+		<a href="/turtlemay" rel="author" title="Thomas Mayer" aria-description="Author website">
 			<div class="dingbat" />
 		</a>
 	</div>
