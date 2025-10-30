@@ -7,11 +7,10 @@ import pagefind from "astro-pagefind";
 import { photoDataAstroIntegration } from "./compile-photo-data";
 
 dotenv.config({ path: [".env.local", ".env"] });
-const { SITE } = process.env;
 const { DEV_PORT } = process.env;
 
 export default defineConfig({
-	site: SITE,
+	site: "https://www.turtlemay.us/",
 	integrations: [
 		mdx(),
 		sitemap(),
