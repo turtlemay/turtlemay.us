@@ -1,5 +1,6 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
+import { render } from "astro:content";
 import BaseHead from "../components/BaseHead.astro";
 import SiteLayout from "../layouts/SiteLayout.astro";
 import FormattedDate from "../components/FormattedDate.astro";
@@ -16,14 +17,14 @@ export async function getStaticPaths() {
 		return import.meta.env.PROD ? v.data.draft !== true : true;
 	});
 	return arr.map(v => ({
-		params: { post: `/posts/${v.slug}` },
+		params: { post: `/posts/${v.id}` },
 		props: v,
 	}));
 }
 
 const d = Astro.props.data;
 
-const { Content } = await Astro.props.render();
+const { Content } = await render(Astro.props);
 ---
 <html lang="en">
 	<head>
@@ -61,7 +62,7 @@ const { Content } = await Astro.props.render();
 				</header>
 				<div class="blogPost__postContent" data-pagefind-body>
 					{d.series && (
-						<SeriesIntro series={d.series.slug} />
+						<SeriesIntro series={d.series.id} />
 					)}
 					<Content components={{ img: BlogImage }} />
 				</div>

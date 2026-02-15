@@ -12,7 +12,7 @@ const items = (await getCollection("posts", v => {
 });
 
 const postNumbers = Object.fromEntries(items.toReversed().map(
-	(v, i) => [v.slug, i + 1])
+	(v, i) => [v.id, i + 1])
 );
 
 function formatDate(date: Date) {
@@ -24,9 +24,9 @@ function formatDate(date: Date) {
 <ul>
 	{Astro.props.posts.map(v => (
 		<li>
-			<a class="postLink" href={`/posts/${v.slug}/`} title={v.data.title}>
+			<a class="postLink" href={`/posts/${v.id}/`} title={v.data.title}>
 				<div class="postNum" aria-hidden="true">
-					{`${postNumbers[v.slug]}`.padStart(3, "0")}
+					{`${postNumbers[v.id]}`.padStart(3, "0")}
 				</div>
 				<div class="postTitle">
 					<h3 class="heading">{v.data.title}</h3>

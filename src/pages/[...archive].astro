@@ -1,5 +1,6 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
+import { render } from "astro:content";
 import BaseHead from "../components/BaseHead.astro";
 import SiteLayout from "../layouts/SiteLayout.astro";
 import SiteLinkCallout from "../components/SiteLinkCallout.astro";
@@ -14,14 +15,14 @@ export async function getStaticPaths() {
 		return import.meta.env.PROD ? v.data.draft !== true : true;
 	});
 	return arr.map(v => ({
-		params: { archive: `/posts/${v.slug}` },
+		params: { archive: `/posts/${v.id}` },
 		props: v,
 	}));
 }
 
 type Props = CollectionEntry<"archive">;
 
-const { Content } = await Astro.props.render();
+const { Content } = await render(Astro.props);
 
 function createDateText(date: Date) {
 	const y = date.toLocaleDateString("en-us", { year: "numeric" });

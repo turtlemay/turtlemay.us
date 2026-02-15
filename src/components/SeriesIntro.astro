@@ -1,5 +1,5 @@
 ---
-import { getEntry } from "astro:content";
+import { getEntry, render } from "astro:content";
 
 interface Props {
 	series: string;
@@ -9,7 +9,7 @@ const entry = await getEntry("series", Astro.props.series);
 
 if (!entry) throw new Error(`Entry "${Astro.props.series}" not found.`);
 
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 const { data: d } = entry;
 
 const numPosts = d.posts.length;
@@ -26,11 +26,11 @@ const pluralPosts = numPosts > 1;
 		</summary>
 		<ul>
 			{d.posts.map(async v => {
-				const { data: dd } = await getEntry("posts", v.slug);
+				const { data: dd } = await getEntry("posts", v.id) || {};
 				return (
 					<li>
-						<a href={`/posts/${v.slug}`}>{dd.title}</a> —
-						{dd.description}
+						<a href={`/posts/${v.id}`}>{dd?.title}</a> —
+						{dd?.description}
 					</li>
 				);
 			})}

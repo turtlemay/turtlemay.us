@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import Blog from "../layouts/Blog.astro";
 import StatusItem from "../components/StatusItem.astro";
 import SiteLinkCallout from "../components/SiteLinkCallout.astro";
@@ -18,7 +18,7 @@ const items = (await getCollection("status", v => {
 			<h1>Status Updates</h1>
 			<ul data-pagefind-ignore>
 				{items.map(async v => {
-					const { Content } = await v.render();
+					const { Content } = await render(v);
 					return (
 						<li>
 							<StatusItem {...v}>

@@ -1,5 +1,6 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
+import { render } from "astro:content";
 import Blog from "../layouts/Blog.astro";
 import StatusItem from "../components/StatusItem.astro";
 import AuthorCard from "../components/AuthorCard.astro";
@@ -13,14 +14,14 @@ export async function getStaticPaths() {
 		return import.meta.env.PROD ? v.data.draft !== true : true;
 	});
 	return arr.map(v => ({
-		params: { status: `/posts/${v.slug}` },
+		params: { status: `/posts/${v.id}` },
 		props: v,
 	}));
 }
 
 type Props = CollectionEntry<"status">;
 
-const { Content } = await Astro.props.render();
+const { Content } = await render(Astro.props);
 
 function getPageTitle() {
 	const title = Astro.props.data.title;

@@ -38,11 +38,11 @@ function getPostDate(v: (typeof items)[0]) {
 						</div>
 						<div class="itemContent">
 							<div class="postDetails">
-								<h2 class="postTitle" id={`${v.slug}-post-title`}>
+								<h2 class="postTitle" id={`${v.id}-post-title`}>
 									{v.data.title}
 								</h2>
 								<p class="postDescription">{v.data.description}</p>
-								<a class="readMore" aria-describedby={`${v.slug}-post-title`} href={`/posts/${v.slug}`}>
+								<a class="readMore" aria-describedby={`${v.id}-post-title`} href={`/posts/${v.id}`}>
 									Read More
 								</a>
 							</div>

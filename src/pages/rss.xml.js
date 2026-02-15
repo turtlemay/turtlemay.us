@@ -2,7 +2,7 @@
 
 import rss from "@astrojs/rss";
 import sanitizeHtml from "sanitize-html";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { loadRenderers } from "astro:container";
 import { getContainerRenderer } from "@astrojs/mdx";
@@ -28,18 +28,18 @@ export async function GET(context) {
 			title: `Blog Post ❖ ${v.data.title}`,
 			description: v.data.description,
 			pubDate: v.data.pubDate,
-			link: `/posts/${v.slug}/`,
+			link: `/posts/${v.id}/`,
 			content: v.data.description,
 		})),
 		...await Promise.all(status.map(async v => {
-			const { Content } = await v.render();
+			const { Content } = await render(v);
 			const html = await container.renderToString(Content);
 			return {
 				...v.data,
 				title: v.data.title ?? createStatusItemTitle(v.data),
 				description: createStatusItemTitle(v.data),
 				pubDate: v.data.pubDate,
-				link: `/posts/${v.slug}#${v.slug}`,
+				link: `/posts/${v.id}#${v.id}`,
 				content: sanitizeHtml(html, {
 					allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
 				}),

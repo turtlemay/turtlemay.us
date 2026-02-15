@@ -69,7 +69,7 @@ const itemsNewestFirst = items.sort((a, b) => {
 				{itemsNewestFirst.map(v => (
 					<li>
 						<time aria-hidden="true" datetime={v.data.pubDate.toISOString()}></time>
-						<a href={`/posts/${v.slug}`}>{v.data.title}</a>
+						<a href={`/posts/${v.id}`}>{v.data.title}</a>
 					</li>
 				))}
 			</ul>
