@@ -1,0 +1,70 @@
+---
+title: Email Organization Using Aliases and Catch-All
+description: How to use email aliases for email organization.
+pubDate: 2026-02-05 19:15 EST
+originalUrl: https://tm.trtl.in/posts/email-aliases/
+---
+
+**2025-10-30T14:35:12-04:00**
+
+Email aliases are a great way to add improved searchability and filtering to your existing email service, and with the addition of your own domain name, these organizational tools become even more easy and robust. Here's how you might use this principle for organizing your inbox and filtering out spam and other unwanted emails.
+
+## Common Email Alias Techniques
+
+Many email providers unofficially support a form of aliases, created by placing one or more periods in your username. Or more accurately, they *ignore* periods, allowing you to use finite variations such as `xyz@[host]`, `x.yz@[host]`, and `x.y.z@[host]` to refer to the same address.
+
+They may also have support for unlimited aliases using the plus sign such as `xyz+service1@[host]`, `xyz+service2@[host]`, and `xyz+arbitrarytext@[host]` to refer to the same address.
+
+By adding this sort of meta information to your account sign-ups, you can use email filters for easy organization and also more easily identify spammers and data breaches.
+
+## Custom Domains as an Alternative to Aliases
+
+While "plus" aliases have many benefits, they are dependent on every third party to accept and correctly handle the format (and also does nothing to actually conceal the original address from bad actors). But there is a much more reliable and versatile way of achieving unlimited aliases for any purpose.
+
+Using your own domain name (going rates around $10/year), you can not only create unlimited discrete mailboxes, but also enable a catch-all which handles all mail sent to any non-existent address. This kind of setup allows infinite on-the-fly aliases, even multiple per service.
+
+``` ini
+# Example cases
+your_real_name@[your_domain]
+your_nickname@[your_domain]
+your_business_name@[your_domain]
+serviceA@[your_domain]
+serviceB_public@[your_domain]
+serviceB_private@[your_domain]
+guest_checkout_20250101@[your_domain]
+your_dentist@[your_domain]
+random_shop_receipt@[your_domain]
+random_contractor_who_will_definitely_spam_you@[your_domain]
+important_mailing_list@[your_domain]
+dodgy_mailing_list@[your_domain]
+coworkers@[your_domain]
+best_friend@[your_domain]
+```
+
+All of the above can be received in the same inbox with no special configuration, or automatically filtered or forwarded again to your preference. Catch-all allows you to instantly start using a new alias for each of your services, contacts, or roles. This principle can immediately improve your privacy, security, and professional presence as well as productivity.
+
+A dedicated mail hosting provider that supports custom domains will give you the most control but you can just as well forward everything to your existing provider of choice (the main downside being that you can't *send* mail from your arbitrary addresses, at least not while passing anti-spoofing measures used by most reputable mail providers).
+
+This forwarding requires very little technical knowledge and is as simple as purchasing your domain and entering your preferred email address in your account dashboard. [^email-provider]
+
+[^email-provider]: I previously hosted with
+[MXroute](https://mxroute.com/)
+but currently use free forwarding from Namecheap's servers to my `@gmail.com` address.
+
+## Notes on Security
+
+While using a custom domain is not inherently any less secure than a single consumer email address (in fact the additional layer of indirection makes all of your accounts more secure by concealing your actual inbox provider and login information), there are some things to consider when using your own domain.
+
+1) Some top-level domains are necessarily associated with your identity via public records, so you won't want to use those for private accounts. [^public-info]
+
+[^public-info]: For instance, owners of `.us` domains are required to provide accurate contact information for the WHOIS public directory while most other TLDs do not have this requirement.
+
+2) A catch-all policy also creates an avenue for spammers to continue to send mail to many different addresses on your domain like `info@`, `noreply@`, `postmaster@`, or any other random inbox. However, these are usually quite easy to identify and filter out—if they're not caught by your spam filter anyway—and often just serve to reveal more about the spammer.
+
+3) Consider also that companies can profile you across different accounts based upon the shared domain, but they would do that anyway with a traditional email address, so this is more of a point against the latter.
+
+The bottom line is to always be aware of what information you're sharing and who is asking for it, and use the appropriate tools for the situation. Email aliases in any form can be an excellent tool for thwarting hackers, spammers, and businesses with either malicious or sloppy security practices.
+
+------
+Not so fun fact:
+As of 2025, nearly half of all emails are spam, accounting for more than 800,000 tons of CO2 per year.

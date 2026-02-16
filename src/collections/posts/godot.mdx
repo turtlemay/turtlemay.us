@@ -1,0 +1,50 @@
+---
+title: Thoughts on Godot Engine
+description: Thoughts on my brief experience with the Godot game engine.
+pubDate: 2026-02-05 14:00 EST
+originalUrl: https://tm.trtl.in/posts/godot/
+---
+
+**2026-02-05T15:06:33-05:00**
+
+I've been exploring the
+[Godot game engine](https://godotengine.org/)
+this week, seeing if it offers any advantages over Unity for my
+[Geometry-Wars-like](/posts/neon-garden).
+There's a lot to love about Godot and I can see it being a really smooth development experience for certain types of games. But for my purposes I encountered some frustrating roadblocks which have quickly driven me back to
+[Unity](https://unity.com/products/unity-engine).
+
+### What I appreciate about Godot compared to Unity
+* Build sizes are small, editor and runtimes are lightweight and can run on old hardware.
+* Importing assets and running GDScript projects is lightning-fast.
+* The editor generally stays out of your way and lets you write efficiently without constant recompilation.
+* Project structure is simple and easy to manage and configurations are readable in a text editor.
+
+### Disadvantages of Godot compared to Unity
+As of Godot 4.6, these are the issues that make this platform unpleasant at best, and not usable for my current projects.
+[^technical-details]
+
+- #### Inheritance < Composition
+	Lack of a component system makes code re-use difficult. Despite the more terse syntax, scripting actually requires much more planning than in Unity. Godot's system is a bit closer to what I remember from Unreal Engine in that each object extends a parent node and can only have one script, requiring many nested child nodes for complex behavior, whereas Unity allows composing one object from many components.
+- #### Lacking code editor features/integration
+	The built-in code editor lacks basic features such as renaming variables. VS Code is supported but the language server depends on the Godot editor and seems to crash often.
+- #### Weak static analysis
+	Many node member fields lack GDScript type annotations, making scripting built-in nodes difficult due to lack of intellisense and static error-checking.
+- #### Lack of assemblies / namespaces
+	Reusing your common functions requires more boilerplate in every file.
+- #### GDScript language
+	All the worst parts of Python with few advantages... duck typing, poor static type inference, no interfaces, no package system, no standard library. C# is supported in some capacity, potentially alleviating some of the above, but documentation prioritizes GDScript and interop appears to use messy dynamic binding with strings rather than static binding.
+- #### No object references in inspector
+	Node references cannot be easily serialized in the inspector nor fetched by type in a script without complicated loops, encouraging scene tree paths and magic strings which are not statically analyzable. This makes controlling other nodes in the same object more difficult.
+- #### No distinction between scenes, nodes, and prefabs
+	A node saved to disk is treated as a separate scene, making editing and previewing individual prefabs more difficult and confusing.
+- #### 2D and 3D nodes can't be used together
+	Tooling and shaders are not inter-operable, making 2.5D graphics difficult.
+- #### Missing documentation/annotations
+	Many functions are undocumented or poorly documented, particularly the particle systems.
+- #### Unfinished particle system
+	3D and 2D particle systems lack most features available in Unity.
+
+Truth be told, many of these are convenience issues and personal preference, but my needs at the moment happen to involve a lot of complex particles and post processing. I do look forward to checking out Godot again in the future for a less stringent project.
+
+[^technical-details]: Don't quote me on the technical details; these are just my impressions after a few days of experimenting.
