@@ -206,6 +206,10 @@
 	}
 }
 
+.blogPost__postContent ul li > :is(h2, h3, h4, h5, h6):only-of-type {
+	margin: 0;
+}
+
 .blogPost__postContent a {
 	text-decoration: inherit;
 	color: inherit;
