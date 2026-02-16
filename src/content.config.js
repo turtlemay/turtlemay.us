@@ -16,6 +16,7 @@ export const collections = {
 			updatedDate: z.coerce.date().optional(),
 			tags: z.array(z.string()).optional(),
 			series: reference("series").optional(),
+			originalUrl: z.string().url().optional(),
 		}),
 	}),
 	series: defineCollection({
