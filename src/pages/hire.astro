@@ -8,18 +8,12 @@ import locationIcon from "../assets/location.svg?raw";
 import "../styles/sitePage.css";
 
 const LAST_UPDATED_DATE = new Date("2024-11-06 18:00");
-
-function getUpdatedDateText(date: Date) {
-	const y = date.toLocaleDateString("en-us", { year: "numeric" });
-	const m = date.toLocaleDateString("en-us", { month: "short" });
-	const d = date.toLocaleDateString("en-us", { day: "numeric" });
-	return `${m} ${d}, ${y}`;
-}
 ---
 <!doctype html>
 <html lang="en">
 <head>
 	<BaseHead metaTitle={`${SITE_TITLE} - Hire Me`} metaDescription="Hire me for freelance or contract work" />
+	<meta property="article:modified_time" content={LAST_UPDATED_DATE.toISOString()} />
 	<style>
 		ul {
 			padding: 0;
