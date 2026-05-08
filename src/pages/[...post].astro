@@ -7,7 +7,6 @@ import FormattedDate from "../components/FormattedDate.astro";
 import LinkCopyButton from "../components/LinkCopyButton.astro";
 import BlogImage from "../components/BlogImage.astro";
 import SeriesIntro from "../components/SeriesIntro.astro";
-import PostCallout from "../components/PostCallout.astro";
 
 import "../styles/blogPost.css";
 
@@ -64,9 +63,6 @@ const { Content } = await render(Astro.props);
 				<div class="blogPost__postContent" data-pagefind-body>
 					{d.series && (
 						<SeriesIntro series={d.series.id} />
-					)}
-					{d.originalUrl && (
-						<PostCallout url={d.originalUrl} />
 					)}
 					<Content components={{ img: BlogImage }} />
 				</div>
