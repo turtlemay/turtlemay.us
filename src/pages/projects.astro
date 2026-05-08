@@ -6,7 +6,7 @@ import LinkCallout from "../components/LinkCallout.astro";
 
 import "../styles/sitePage.css";
 
-const LAST_UPDATED_DATE = new Date("2024-12-15 23:00");
+const LAST_UPDATED_DATE = new Date("2026-05-07 23:00");
 
 const DESCRIPTION = "This page is a summary of a few of my more significant ventures in life. It will be expanded and updated as time goes on.";
 
@@ -198,6 +198,16 @@ function getUpdatedDateText(date: Date) {
 			</section>
 			<section>
 				<h2>Current Projects, Hobbies, and Activities</h2>
+				<section>
+					<aside class="projectCallout">
+						<LinkCallout id="neocities" />
+					</aside>
+					<div>
+						<h3>Neocities Web Experiments <span class="date">2026–Present</span></h3>
+						<p>In support of the indie web I have started publishing some fun static HTML demos and web components on my <a href="https://turtlemay.neocities.org/">Neocities page</a>.</p>
+						<p>After learning more about the small-web movement I’m beginning to appreciate the unique communities offered by Neocities and its biggest peer, Nekoweb. They’re great places to find creative personal sites made by real people with pro-social values and unique interests.</p>
+					</div>
+				</section>
 				<section>
 					<aside class="projectCallout">
 						<LinkCallout id="bike-channel" />
