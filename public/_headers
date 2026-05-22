@@ -1,0 +1,11 @@
+/business-card/*
+  X-Robots-Tag: noindex
+
+/posts/business-card
+  X-Robots-Tag: noindex
+
+/_astro/turtlemay-business-card*.pdf
+  X-Robots-Tag: noindex
+
+/business-card/*.svg
+  Content-Disposition: attachment
