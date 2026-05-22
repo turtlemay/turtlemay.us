@@ -22,11 +22,13 @@ interface Props {
 </head>
 
 <body class="site-layout">
-	<div class="site-main">
-		<div class="site-content">
-			<slot />
-		</div>
+	<main>
+		<slot />
+	</main>
+	<header>
 		<Nav active={Astro.props.content.id} />
+	</header>
+	<footer>
 		<Memorial />
-	</div>
+	</footer>
 </body>
