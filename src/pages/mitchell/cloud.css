@@ -1,0 +1,9 @@
+pre.prose {
+	font: 12pt "Noto Sans";
+	line-height: "1.6";
+
+	em {
+		font-family: "Playwrite GB S";
+		color: #000;
+	}
+}

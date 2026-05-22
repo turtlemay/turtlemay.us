@@ -1,0 +1,32 @@
+---
+import BaseHead from "./_BaseHead.astro";
+import Nav from "./_Nav.astro";
+import Memorial from "./_Memorial.astro";
+import "./global.css";
+import "./poem.css";
+
+interface Props {
+	content: {
+		title: string;
+		description?: string;
+		id: string;
+	};
+}
+---
+
+<head>
+	<BaseHead />
+	<meta name="title" content={Astro.props.content.title} />
+	<meta name="description" content={Astro.props.content.description || ""} />
+	<title>{Astro.props.content.title}</title>
+</head>
+
+<body class="site-layout">
+	<div class="site-main">
+		<div class="site-content">
+			<slot />
+		</div>
+		<Nav active={Astro.props.content.id} />
+		<Memorial />
+	</div>
+</body>

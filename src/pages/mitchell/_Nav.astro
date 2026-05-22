@@ -1,0 +1,53 @@
+---
+interface Props {
+	active?: string;
+}
+
+const activeId = Astro.props.active || "";
+---
+
+<style>
+.nav {
+	font: 12pt "Noto Sans";
+	margin: 4em 0;
+	display: flex;
+	gap: 1em;
+	justify-content: safe center;
+	flex-wrap: wrap;
+
+	a {
+		color: rgb(35, 88, 185);
+		text-decoration: none;
+	}
+
+	.nav-item {
+		padding: 0.25em 2em;
+	}
+
+	.nav-item.active {
+		position: relative;
+
+		&::before {
+			content: "";
+			position: absolute;
+			left: 0;
+			top: 0;
+			display: block;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.05);
+			transform: skew(-20deg);
+		}
+	}
+
+	.nav-item:hover {
+		text-decoration: underline;
+	}
+}
+</style>
+
+<div class="nav">
+	<a class="nav-item" class:list={{active: activeId === "guardian"}} href="/mitchell/guardian-angel">Guardian Angel</a>
+	<a class="nav-item" class:list={{active: activeId === "waves"}} href="/mitchell/waves">Waves</a>
+	<a class="nav-item" class:list={{active: activeId === "cloud"}} href="/mitchell/catch-a-cloud">If I Could Catch a Cloud</a>
+</div>

@@ -1,0 +1,29 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background: ghostwhite;
+	margin: 0;
+}
+
+pre.prose {
+	padding: 1em 2em;
+	margin: 1em 0;
+	font: 12pt "Noto Serif";
+	background: rgba(0, 0, 0, 0.025);
+	color: #222;
+	line-height: 1.5;
+}
+
+.preface {
+	font: 12pt "Noto Sans";
+	color: #222;
+	margin: 2em 2em 4em;
+	max-width: 700px;
+}
+
+.title {
+	font: 12pt "Noto Sans";
+	color: #000;
+}

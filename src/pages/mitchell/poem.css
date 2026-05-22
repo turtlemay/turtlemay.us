@@ -1,0 +1,11 @@
+body {
+	margin: 2em;
+}
+
+.site-layout {
+	display: flex;
+	flex-direction: column;
+	align-items: safe center;
+	min-height: 100vh;
+	padding-bottom: 4em;
+}

@@ -1,0 +1,63 @@
+<style>
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: safe center;
+	justify-content: safe center;
+}
+
+.memorial {
+	margin: 4em 0;
+	padding: 0.5em;
+	border-bottom: 2px solid #000;
+	font: 12pt "Noto Serif";
+	display: flex;
+	flex-direction: column;
+	align-items: safe center;
+	justify-content: safe center;
+
+	.name {
+		color: #000;
+	}
+
+	.years {
+		gap: 0.5em;
+		color: #999;
+		display: flex;
+		justify-content: space-evenly;
+		align-items: safe center;
+
+		.from {
+			float: left;
+		}
+
+		.to {
+			float: right;
+		}
+
+		.separator {
+			color: #000;
+			user-select: none;
+			font: 16pt monospace;
+		}
+	}
+}
+
+a[href] {
+	color: inherit;
+	text-decoration: inherit;
+}
+</style>
+
+<div class="wrapper">
+	<div class="memorial">
+		<div class="name">
+			<a href="/mitchell">Mitchell Mayer</a>
+		</div>
+		<div class="years">
+			<div class="from">1956</div>
+			<div class="separator" role="presentation">†</div>
+			<div class="to">2018</div>
+		</div>
+	</div>
+</div>
