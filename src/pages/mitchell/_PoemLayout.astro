@@ -24,13 +24,13 @@ interface Props {
 	</head>
 
 	<body class="site-layout">
-		<main>
+		<main data-pagefind-body>
 			<slot />
 		</main>
 		<header>
 			<Nav active={Astro.props.content.id} />
 		</header>
-		<footer>
+		<footer data-pagefind-body>
 			<Memorial />
 		</footer>
 	</body>
