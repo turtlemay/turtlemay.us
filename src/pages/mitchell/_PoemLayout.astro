@@ -14,21 +14,24 @@ interface Props {
 }
 ---
 
-<head>
-	<BaseHead />
-	<meta name="title" content={Astro.props.content.title} />
-	<meta name="description" content={Astro.props.content.description || ""} />
-	<title>{Astro.props.content.title}</title>
-</head>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead />
+		<meta name="title" content={Astro.props.content.title} />
+		<meta name="description" content={Astro.props.content.description || ""} />
+		<title>{Astro.props.content.title}</title>
+	</head>
 
-<body class="site-layout">
-	<main>
-		<slot />
-	</main>
-	<header>
-		<Nav active={Astro.props.content.id} />
-	</header>
-	<footer>
-		<Memorial />
-	</footer>
-</body>
+	<body class="site-layout">
+		<main>
+			<slot />
+		</main>
+		<header>
+			<Nav active={Astro.props.content.id} />
+		</header>
+		<footer>
+			<Memorial />
+		</footer>
+	</body>
+</html>
